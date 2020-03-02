@@ -1,2 +1,2 @@
-# YCRouter
-组件化方案探索案例
+# liveData实现事件总线
+使用liveData实现事件总线，替代EventBus方案，具有activity或者fragment生命周期感知能力，实时收到消息。
