@@ -124,7 +124,7 @@ bintray {
     pkg {
         repo = "maven"
         name = libName    //发布到JCenter上的项目名字，必须填写
-        desc = 'Android Custom Text'    //项目描述
+        desc = 'Android Live Data Bus'    //项目描述
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

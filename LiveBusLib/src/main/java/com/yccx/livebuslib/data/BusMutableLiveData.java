@@ -26,11 +26,7 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> {
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
         super.observe(owner, observer);
-        try {
-            hook(observer);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        hook(observer);
     }
 
     /**
@@ -64,37 +60,59 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> {
     }
 
     /**
+     * 在给定的观察者的生命周期内将给定的观察者添加到观察者列表所有者。
+     * 事件是在主线程上分派的。如果LiveData已经有数据集合，它将被传递给观察者。
+     * @param owner                                 owner
+     * @param observer                              observer
+     */
+    public void observeSticky(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
+        super.observe(owner, observer);
+    }
+
+    /**
+     * 将给定的观察者添加到观察者列表中。这个调用类似于{@link LiveData#observe(LifecycleOwner, Observer)}
+     * 和一个LifecycleOwner, which总是积极的。这意味着给定的观察者将接收所有事件，并且永远不会 被自动删除。
+     * 您应该手动调用{@link #removeObserver(Observer)}来停止 观察这LiveData。
+     * @param observer                              observer
+     */
+    public void observeStickyForever(@NonNull Observer<T> observer) {
+        super.observeForever(observer);
+    }
+
+    /**
      * 利用反射修改属性
      * @param observer                              observer
      */
-    private void hook(@NonNull Observer<T> observer) throws Exception {
-        //get wrapper's version
-        Class<LiveData> classLiveData = LiveData.class;
-        Field fieldObservers = classLiveData.getDeclaredField("mObservers");
-        fieldObservers.setAccessible(true);
-        Object objectObservers = fieldObservers.get(this);
-        Class<?> classObservers = objectObservers.getClass();
-        Method methodGet = classObservers.getDeclaredMethod("get", Object.class);
-        methodGet.setAccessible(true);
-        Object objectWrapperEntry = methodGet.invoke(objectObservers, observer);
-        Object objectWrapper = null;
-        if (objectWrapperEntry instanceof Map.Entry) {
-            objectWrapper = ((Map.Entry) objectWrapperEntry).getValue();
+    private void hook(@NonNull Observer<T> observer){
+        try {
+            Class<LiveData> classLiveData = LiveData.class;
+            Field fieldObservers = classLiveData.getDeclaredField("mObservers");
+            fieldObservers.setAccessible(true);
+            Object objectObservers = fieldObservers.get(this);
+            Class<?> classObservers = objectObservers.getClass();
+            Method methodGet = classObservers.getDeclaredMethod("get", Object.class);
+            methodGet.setAccessible(true);
+            Object objectWrapperEntry = methodGet.invoke(objectObservers, observer);
+            Object objectWrapper = null;
+            if (objectWrapperEntry instanceof Map.Entry) {
+                objectWrapper = ((Map.Entry) objectWrapperEntry).getValue();
+            }
+            if (objectWrapper == null) {
+                throw new NullPointerException("Wrapper can not be bull!");
+            }
+            Class<?> classObserverWrapper = objectWrapper.getClass().getSuperclass();
+            Field fieldLastVersion = null;
+            if (classObserverWrapper != null) {
+                fieldLastVersion = classObserverWrapper.getDeclaredField("mLastVersion");
+                fieldLastVersion.setAccessible(true);
+                Field fieldVersion = classLiveData.getDeclaredField("mVersion");
+                fieldVersion.setAccessible(true);
+                Object objectVersion = fieldVersion.get(this);
+                fieldLastVersion.set(objectWrapper, objectVersion);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (objectWrapper == null) {
-            throw new NullPointerException("Wrapper can not be bull!");
-        }
-        Class<?> classObserverWrapper = objectWrapper.getClass().getSuperclass();
-        Field fieldLastVersion = null;
-        if (classObserverWrapper != null) {
-            fieldLastVersion = classObserverWrapper.getDeclaredField("mLastVersion");
-            fieldLastVersion.setAccessible(true);
-            //get livedata's version
-            Field fieldVersion = classLiveData.getDeclaredField("mVersion");
-            fieldVersion.setAccessible(true);
-            Object objectVersion = fieldVersion.get(this);
-            //set wrapper's version
-            fieldLastVersion.set(objectWrapper, objectVersion);
-        }
+
     }
 }

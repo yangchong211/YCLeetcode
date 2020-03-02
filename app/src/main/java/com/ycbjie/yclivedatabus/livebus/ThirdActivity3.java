@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ycbjie.yclivedatabus.R;
+import com.ycbjie.yclivedatabus.constant.Constant;
+import com.yccx.livebuslib.event.LiveDataBus;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -60,13 +62,15 @@ public class ThirdActivity3 extends AppCompatActivity implements View.OnClickLis
                         text = "变化成默认的数据";
                         break;
                 }
-                LiveDataBus2.get().getChannel("yc_bus").setValue(text);
+                LiveDataBus2.get().getChannel(Constant.YC_BUS).setValue(text);
+                LiveDataBus.get().with(Constant.YC_BUS2).setValue(text);
             }
         });
         findViewById(R.id.tv_3).setOnClickListener(this);
         findViewById(R.id.tv_4).setOnClickListener(this);
         findViewById(R.id.tv_5).setOnClickListener(this);
         findViewById(R.id.tv_6).setOnClickListener(this);
+        findViewById(R.id.tv_7).setOnClickListener(this);
         initLiveData();
     }
 
@@ -85,6 +89,9 @@ public class ThirdActivity3 extends AppCompatActivity implements View.OnClickLis
             case R.id.tv_6:
                 closeAll();
                 break;
+            case R.id.tv_7:
+                startActivity(new Intent(this, StickyLiveActivity.class));
+                break;
             default:
                 break;
         }
@@ -92,7 +99,7 @@ public class ThirdActivity3 extends AppCompatActivity implements View.OnClickLis
 
     private void initLiveData() {
         LiveDataBus2.get()
-                .getChannel("yc_bus", String.class)
+                .getChannel(Constant.YC_BUS, String.class)
                 .observe(this, new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String newText) {

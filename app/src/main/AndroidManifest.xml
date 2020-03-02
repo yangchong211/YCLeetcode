@@ -19,12 +19,21 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.FirstActivity"/>
-        <activity android:name=".activity.SecondActivity"/>
+
+        <activity android:name=".eventbus.SecondActivity"/>
+        <activity android:name=".eventbus.SecondActivity1"/>
+        <activity android:name=".eventbus.SecondActivity2"/>
+        <activity android:name=".eventbus.SecondActivity3"/>
+        <activity android:name=".eventbus.StickyEventActivity"/>
+
         <activity android:name=".livebus.ThirdActivity"/>
         <activity android:name=".livebus.ThirdActivity1"/>
         <activity android:name=".livebus.ThirdActivity2"/>
         <activity android:name=".livebus.ThirdActivity3"/>
         <activity android:name=".livebus.ThirdActivity4"/>
+        <activity android:name=".livebus.StickyLiveActivity"/>
+
+
         <activity android:name=".activity.FourActivity"/>
     </application>
 

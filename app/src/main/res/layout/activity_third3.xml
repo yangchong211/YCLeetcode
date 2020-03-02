@@ -67,4 +67,14 @@
         android:text="6.发送消息关闭该页面"/>
 
 
+    <TextView
+        android:id="@+id/tv_7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:text="7.跳转下一个页面测试是否是粘性事件"/>
+
+
 </LinearLayout>
