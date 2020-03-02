@@ -1,9 +1,6 @@
-package com.ycbjie.yclivedatabus.activity;
+package com.ycbjie.yclivedatabus.livebus;
 
-import android.annotation.SuppressLint;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,16 +11,15 @@ import android.widget.TextView;
 import com.ycbjie.yclivedatabus.R;
 import com.ycbjie.yclivedatabus.model.TextViewModel;
 
-public class ThirdActivity extends AppCompatActivity {
+public class ThirdActivity2 extends AppCompatActivity {
 
     private TextView tvText;
-    private TextViewModel model;
     private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_third);
+        setContentView(R.layout.activity_third2);
         tvText = findViewById(R.id.tv_text);
         findViewById(R.id.tv_click).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,39 +43,22 @@ public class ThirdActivity extends AppCompatActivity {
                         text = "变化成默认的数据";
                         break;
                 }
-                model.getCurrentText().setValue(text);
+                LiveDataBus1.get().getChannel("yc_bus").setValue(text);
             }
         });
         initLiveData();
     }
 
     private void initLiveData() {
-        // 创建一个持有某种数据类型的LiveData (通常是在ViewModel中)
-        model = ViewModelProviders.of(this).get(TextViewModel.class);
-        // 创建一个定义了onChange()方法的观察者
-        final Observer<String> nameObserver = new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable final String newText) {
-                // 更新数据
-                tvText.setText(newText);
-            }
-        };
-        // 通过 observe()方法连接观察者和LiveData，注意：observe()方法需要携带一个LifecycleOwner类
-        model.getCurrentText().observe(this, nameObserver);
+        LiveDataBus1.get().getChannel("yc_bus", String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String newText) {
+                        // 更新数据
+                        tvText.setText(newText);
+                    }
+                });
     }
 
 
-    /*public class TextViewModel extends ViewModel {
-
-        //LiveData是抽象类，MutableLiveData是具体实现类
-        private MutableLiveData<String> mCurrentText;
-
-        public MutableLiveData<String> getCurrentText() {
-            if (mCurrentText == null) {
-                mCurrentText = new MutableLiveData<>();
-            }
-            return mCurrentText;
-        }
-
-    }*/
 }
