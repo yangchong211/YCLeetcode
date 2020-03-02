@@ -11,32 +11,25 @@
 
 
     <TextView
-        android:id="@+id/tv_1"
+        android:id="@+id/tv_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="1.使用eventBus遇到的问题"/>
+        android:text="1.简单使用liveData"/>
 
 
     <TextView
-        android:id="@+id/tv_2"
+        android:id="@+id/tv_click"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="2.使用RxBus遇到的问题"/>
+        android:text="2.点击使用liveData更新数据"/>
 
 
-    <TextView
-        android:id="@+id/tv_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
-        android:padding="10dp"
-        android:text="3.简单使用liveData操作步骤"/>
+
 
 
 </LinearLayout>
