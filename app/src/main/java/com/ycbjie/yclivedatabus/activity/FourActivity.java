@@ -1,9 +1,11 @@
-package com.ycbjie.yclivedatabus;
+package com.ycbjie.yclivedatabus.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-public class ThirdActivity extends AppCompatActivity {
+import com.ycbjie.yclivedatabus.R;
+
+public class FourActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
