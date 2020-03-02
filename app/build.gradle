@@ -21,7 +21,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.jeremyliao:live-event-bus:1.5.7'
+    implementation 'com.jeremyliao:live-event-bus:1.1.0'
 
 
     //rx2
@@ -31,4 +31,8 @@ dependencies {
     //rx1
     implementation 'io.reactivex:rxandroid:1.1.0'
     implementation 'io.reactivex:rxjava:1.1.0'
+
+    //lifecycle
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    compile project(path: ':LiveBusLib')
 }

@@ -28,8 +28,4 @@
         android:padding="10dp"
         android:text="2.点击使用liveData更新数据"/>
 
-
-
-
-
 </LinearLayout>

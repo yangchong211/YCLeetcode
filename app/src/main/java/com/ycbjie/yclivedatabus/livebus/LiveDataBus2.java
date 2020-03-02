@@ -133,8 +133,6 @@ public final class LiveDataBus2 {
             } catch (Exception e){
                 e.printStackTrace();
             }
-
-
         }
     }
 }
