@@ -18,6 +18,7 @@ import com.yccx.livebuslib.utils.BusLogUtils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ThirdActivity4 extends AppCompatActivity {
 
@@ -44,13 +45,44 @@ public class ThirdActivity4 extends AppCompatActivity {
                 postValueCountTest2();
             }
         });
+        findViewById(R.id.tv_4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LiveDataBus.get().with(Constant.LIVE_BUS4).postValueDelay("test_4_data",5000);
+            }
+        });
+        findViewById(R.id.tv_5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LiveDataBus.get().with(Constant.LIVE_BUS5).postValueInterval("test_5_data",3000, "doubi");
+            }
+        });
+        findViewById(R.id.tv_6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LiveDataBus.get().with(Constant.LIVE_BUS5).stopPostInterval("doubi");
+            }
+        });
+        initBus();
+    }
+
+    private void initBus() {
         LiveDataBus2.get()
-                .getChannel(Constant.LIVE_BUS3, String.class)
+                .getChannel(Constant.LIVE_BUS2, String.class)
                 .observe(this, new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
                         receiveCount++;
-                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---1-"+s+"----"+receiveCount);
+                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---3-"+s+"----"+receiveCount);
+                    }
+                });
+        LiveDataBus.get()
+                .with(Constant.LIVE_BUS3, String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        receiveCount2++;
+                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---3-"+s+"----"+receiveCount2);
                     }
                 });
         LiveDataBus.get()
@@ -58,8 +90,15 @@ public class ThirdActivity4 extends AppCompatActivity {
                 .observe(this, new Observer<String>() {
                     @Override
                     public void onChanged(@Nullable String s) {
-                        receiveCount2++;
-                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---2-"+s+"----"+receiveCount2);
+                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---4----"+s);
+                    }
+                });
+        LiveDataBus.get()
+                .with(Constant.LIVE_BUS5, String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---5----"+s);
                     }
                 });
     }
@@ -73,7 +112,7 @@ public class ThirdActivity4 extends AppCompatActivity {
             threadPool.execute(new Runnable() {
                 @Override
                 public void run() {
-                    LiveDataBus2.get().getChannel(Constant.LIVE_BUS3).postValue("test_1_data"+sendCount);
+                    LiveDataBus2.get().getChannel(Constant.LIVE_BUS2).postValue("test_1_data"+sendCount);
                 }
             });
         }
@@ -96,7 +135,7 @@ public class ThirdActivity4 extends AppCompatActivity {
             threadPool.execute(new Runnable() {
                 @Override
                 public void run() {
-                    LiveDataBus.get().with(Constant.LIVE_BUS4).postValue("test_2_data"+sendCount2);
+                    LiveDataBus.get().with(Constant.LIVE_BUS3).postValue("test_2_data"+sendCount2);
                 }
             });
         }

@@ -3,6 +3,15 @@ package com.yccx.livebuslib.wrapper;
 import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
 
+/**
+ * <pre>
+ *     @author 杨充
+ *     blog  : https://github.com/yangchong211
+ *     time  : 2019/12/23
+ *     desc  : Observer<T>
+ *     revise:
+ * </pre>
+ */
 public class WrapperObserver<T> implements Observer<T> {
 
     private Observer<T> observer;
@@ -27,14 +36,18 @@ public class WrapperObserver<T> implements Observer<T> {
 
     private boolean isCallOnObserve() {
         //返回一个表示堆栈转储的堆栈跟踪元素数组
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        if (stackTrace != null && stackTrace.length > 0) {
-            for (StackTraceElement element : stackTrace) {
-                if ("android.arch.lifecycle.LiveData".equals(element.getClassName()) &&
-                        "observeForever".equals(element.getMethodName())) {
-                    return true;
+        try {
+            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            if (stackTrace != null && stackTrace.length > 0) {
+                for (StackTraceElement element : stackTrace) {
+                    if ("android.arch.lifecycle.LiveData".equals(element.getClassName()) &&
+                            "observeForever".equals(element.getMethodName())) {
+                        return true;
+                    }
                 }
             }
+        } catch (Exception e){
+            e.printStackTrace();
         }
         return false;
     }

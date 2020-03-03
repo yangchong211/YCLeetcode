@@ -1,6 +1,8 @@
 package com.yccx.livebuslib.utils;
 
 
+import android.os.Looper;
+
 /**
  * <pre>
  *     @author 杨充
@@ -12,5 +14,12 @@ package com.yccx.livebuslib.utils;
  */
 public class BusLibUtils {
 
+    /**
+     * 判断是否是主线程
+     * @return
+     */
+    public boolean isMainThread() {
+        return Looper.getMainLooper().getThread() == Thread.currentThread();
+    }
 
 }

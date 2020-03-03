@@ -9,12 +9,14 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.yccx.livebuslib.helper.BusWeakHandler;
+import com.yccx.livebuslib.inter.BusObservable;
 import com.yccx.livebuslib.wrapper.WrapperObserver;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <pre>
@@ -25,10 +27,11 @@ import java.util.Map;
  *     revise:
  * </pre>
  */
-public class BusMutableLiveData<T> extends MutableLiveData<T> {
+public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObservable<T> {
 
     private Map<Observer, Observer> observerMap = new HashMap<>();
     private BusWeakHandler mainHandler = new BusWeakHandler(Looper.getMainLooper());
+    private Map<String,IntervalValueTask> intervalTasks = new HashMap<>();
 
     private class PostValueTask implements Runnable {
 
@@ -63,6 +66,47 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> {
         //注意，去掉super方法，
         //super.postValue(value);
         mainHandler.post(new PostValueTask(value));
+    }
+
+    /**
+     * 发送延迟事件
+     * @param value                                 value
+     * @param delay                                 延迟时间
+     */
+    @Override
+    public void postValueDelay(T value, long delay) {
+        mainHandler.postDelayed(new PostValueTask(value) , delay);
+        //mainHandler.postAtTime(new PostValueTask(value) , delay);
+    }
+
+    /**
+     * 发送延迟事件，间隔轮训
+     * @param value                                 value
+     * @param interval                              间隔
+     */
+    @Deprecated
+    @Override
+    public void postValueInterval(final T value, final long interval,@NonNull String taskName) {
+        if(taskName.isEmpty()){
+            return;
+        }
+        IntervalValueTask  intervalTask = new IntervalValueTask(value,interval);
+        intervalTasks.put(taskName,intervalTask);
+        mainHandler.postDelayed(intervalTask,interval);
+    }
+
+    /**
+     * 停止轮训间隔发送事件
+     */
+    @Deprecated
+    @Override
+    public void stopPostInterval(@NonNull String taskName) {
+        IntervalValueTask  intervalTask  = intervalTasks.get(taskName);
+        if(intervalTask!= null){
+            //移除callback
+            mainHandler.removeCallbacks(intervalTask);
+            intervalTasks.remove(taskName);
+        }
     }
 
     /**
@@ -113,6 +157,7 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> {
      * @param owner                                 owner
      * @param observer                              observer
      */
+    @Override
     public void observeSticky(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
         super.observe(owner, observer);
     }
@@ -123,6 +168,7 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> {
      * 您应该手动调用{@link #removeObserver(Observer)}来停止 观察这LiveData。
      * @param observer                              observer
      */
+    @Override
     public void observeStickyForever(@NonNull Observer<T> observer) {
         super.observeForever(observer);
     }
@@ -161,6 +207,22 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    private class IntervalValueTask implements Runnable {
+
+        private T newValue;
+        private long interval;
+
+        public IntervalValueTask(T newValue, long interval) {
+            this.newValue = newValue;
+            this.interval = interval;
+        }
+
+        @Override
+        public void run() {
+            setValue(newValue);
+            mainHandler.postDelayed(this,interval);
+        }
     }
 }

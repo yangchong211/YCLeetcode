@@ -39,4 +39,34 @@
         android:text="3.测试用终极版bus采用postValue发送消息"/>
 
 
+
+    <TextView
+        android:id="@+id/tv_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:text="4.发送延迟5秒的消息"/>
+
+
+    <TextView
+        android:id="@+id/tv_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:text="5.发送延迟3秒间隔的轮训消息"/>
+
+
+    <TextView
+        android:id="@+id/tv_6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:text="6.停止延迟3秒间隔的轮训消息"/>
+
 </LinearLayout>
