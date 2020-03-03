@@ -31,12 +31,16 @@ public final class LiveDataBus {
 
     public synchronized <T> BusMutableLiveData<T> with(String key, Class<T> type) {
         if (!bus.containsKey(key)) {
-            bus.put(key, new BusMutableLiveData<>());
+            bus.put(key, new BusMutableLiveData<>(key));
         }
         return (BusMutableLiveData<T>) bus.get(key);
     }
 
     public BusMutableLiveData<Object> with(String key) {
         return with(key, Object.class);
+    }
+
+    public Map<String, BusMutableLiveData<Object>> getBus() {
+        return bus;
     }
 }

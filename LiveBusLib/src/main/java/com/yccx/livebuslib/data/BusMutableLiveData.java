@@ -8,6 +8,7 @@ import android.arch.lifecycle.Observer;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
+import com.yccx.livebuslib.event.LiveDataBus;
 import com.yccx.livebuslib.helper.BusWeakHandler;
 import com.yccx.livebuslib.inter.BusObservable;
 import com.yccx.livebuslib.utils.BusLibUtils;
@@ -33,6 +34,11 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
     private Map<Observer, Observer> observerMap = new HashMap<>();
     private BusWeakHandler mainHandler = new BusWeakHandler(Looper.getMainLooper());
     private Map<String,IntervalValueTask> intervalTasks = new HashMap<>();
+    private String mKey ;
+
+    public BusMutableLiveData(String key) {
+        this.mKey = key;
+    }
 
     private class PostValueTask implements Runnable {
 
@@ -179,6 +185,9 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
             realObserver = observer;
         }
         super.removeObserver(realObserver);
+        if (!hasObservers() && LiveDataBus.get().getBus()!=null) {
+            LiveDataBus.get().getBus().remove(mKey);
+        }
     }
 
     /**
