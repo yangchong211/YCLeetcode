@@ -1,5 +1,6 @@
 package com.yccx.livebuslib.event;
 
+import com.yccx.livebuslib.data.BusLiveData;
 import com.yccx.livebuslib.data.BusMutableLiveData;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,10 @@ import java.util.Map;
 public final class LiveDataBus {
 
     private final Map<String, BusMutableLiveData<Object>> bus;
+    /**
+     * 生命周期观察者总是活动的默认是true
+     */
+    private boolean lifecycleObserverAlwaysActive = true;
 
     private LiveDataBus() {
         bus = new HashMap<>();
@@ -42,5 +47,17 @@ public final class LiveDataBus {
 
     public Map<String, BusMutableLiveData<Object>> getBus() {
         return bus;
+    }
+
+    /**
+     * 设置生命周期观察者总是活动
+     * @param active                            boolean数据
+     */
+    public void lifecycleObserverAlwaysActive(boolean active) {
+        lifecycleObserverAlwaysActive = active;
+    }
+
+    public boolean isLifecycleObserverAlwaysActive() {
+        return lifecycleObserverAlwaysActive;
     }
 }

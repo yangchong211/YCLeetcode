@@ -5,19 +5,19 @@ import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
 
-public final class RxBus {
+public final class RxBus1 {
 
     private final Subject<Object, Object> bus;
 
-    private RxBus() {
+    private RxBus1() {
         bus = new SerializedSubject<>(PublishSubject.create());
     }
 
     private static class SingletonHolder {
-        private static final RxBus defaultRxBus = new RxBus();
+        private static final RxBus1 defaultRxBus = new RxBus1();
     }
 
-    public static RxBus getInstance() {
+    public static RxBus1 getInstance() {
         return SingletonHolder.defaultRxBus;
     }
 

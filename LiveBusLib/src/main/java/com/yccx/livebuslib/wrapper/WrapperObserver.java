@@ -26,11 +26,13 @@ public class WrapperObserver<T> implements Observer<T> {
      */
     @Override
     public void onChanged(@Nullable T t) {
-        if (observer != null) {
-            if (isCallOnObserve()) {
-                return;
-            }
+        if (isCallOnObserve()) {
+            return;
+        }
+        try {
             observer.onChanged(t);
+        } catch (ClassCastException e) {
+            e.printStackTrace();
         }
     }
 

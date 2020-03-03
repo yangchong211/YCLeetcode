@@ -13,6 +13,7 @@ import com.yccx.livebuslib.helper.BusWeakHandler;
 import com.yccx.livebuslib.inter.BusObservable;
 import com.yccx.livebuslib.utils.BusLibUtils;
 import com.yccx.livebuslib.utils.BusLogUtils;
+import com.yccx.livebuslib.wrapper.SafeCastObserver;
 import com.yccx.livebuslib.wrapper.WrapperObserver;
 
 import java.lang.reflect.Field;
@@ -129,6 +130,7 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
         //hook(observer);
         //下面操作可以修复订阅者会收到订阅之前发布的消息的问题
         //获取LifecycleOwner的当前状态
+        SafeCastObserver<T> safeCastObserver = new SafeCastObserver<>(observer);
         Lifecycle lifecycle = owner.getLifecycle();
         Lifecycle.State currentState = lifecycle.getCurrentState();
         //获取生命周期观察者映射的大小
@@ -144,17 +146,17 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
             BusLibUtils.setLifecycleObserverMapSize(lifecycle, -1);
         }
         //调用父类的方法
-        super.observe(owner, observer);
+        super.observe(owner, safeCastObserver);
         if (needChangeState) {
             //返回到LifecycleOwner状态
             BusLibUtils.setLifecycleState(lifecycle, currentState);
             //重置observer size，因为又添加了一个observer，所以数量+1
             BusLibUtils.setLifecycleObserverMapSize(lifecycle, observerSize + 1);
             //设置观察员活跃
-            hookObserverActive(observer, true);
+            hookObserverActive(safeCastObserver, true);
         }
         //设置更改Observer的version
-        hookObserverVersion(observer);
+        hookObserverVersion(safeCastObserver);
     }
 
     /**
@@ -198,7 +200,7 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
      */
     @Override
     public void observeSticky(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
-        super.observe(owner, observer);
+        super.observe(owner, new SafeCastObserver<>(observer));
     }
 
     /**
