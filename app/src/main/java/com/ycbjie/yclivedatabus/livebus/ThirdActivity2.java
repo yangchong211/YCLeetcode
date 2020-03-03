@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ycbjie.yclivedatabus.R;
-import com.ycbjie.yclivedatabus.model.TextViewModel;
 
 public class ThirdActivity2 extends AppCompatActivity {
 

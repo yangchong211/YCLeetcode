@@ -1,12 +1,18 @@
 package com.yccx.livebuslib.event;
 
-
-import android.arch.lifecycle.MutableLiveData;
 import com.yccx.livebuslib.data.BusMutableLiveData;
-
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * <pre>
+ *     @author 杨充
+ *     blog  : https://github.com/yangchong211
+ *     time  : 2019/12/23
+ *     desc  : liveDataBus事件总线
+ *     revise:
+ * </pre>
+ */
 public final class LiveDataBus {
 
     private final Map<String, BusMutableLiveData<Object>> bus;

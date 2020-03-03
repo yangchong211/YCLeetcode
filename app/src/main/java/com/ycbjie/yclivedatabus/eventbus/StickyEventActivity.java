@@ -47,4 +47,22 @@ public class StickyEventActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Subscribe(sticky = true ,threadMode = ThreadMode.MAIN)
+    public void onMainThreadSticky(EventMessage event) {
+        if (event!=null && event.getFlag()!=null){
+            String flag = event.getFlag();
+            Object newText = event.getEvent();
+            switch (flag){
+                case Constant.EVENT_BUS:
+                    BusLogUtils.d("接收消息--StickyEventActivity---sticky---yc_bus---1-"+newText);
+                    break;
+                case Constant.EVENT_BUS2:
+                    BusLogUtils.d("接收消息--StickyEventActivity---sticky---yc_bus---2-"+newText);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }

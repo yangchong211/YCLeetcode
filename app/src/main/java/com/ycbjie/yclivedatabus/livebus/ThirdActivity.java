@@ -47,6 +47,15 @@ public class ThirdActivity extends AppCompatActivity implements View.OnClickList
                         BusLogUtils.d("接收消息--StickyEventActivity------yc_bus---2-"+newText);
                     }
                 });
+        LiveDataBus.get()
+                .with(Constant.YC_BUS2, String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String newText) {
+                        // 更新数据
+                        BusLogUtils.d("接收消息--StickyEventActivity------yc_bus---2-"+newText);
+                    }
+                });
     }
 
 

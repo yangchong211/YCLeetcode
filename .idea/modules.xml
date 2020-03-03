@@ -3,10 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/LiveBusLib/LiveBusLib.iml" filepath="$PROJECT_DIR$/LiveBusLib/LiveBusLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/LiveBusLib/LiveBusLib.iml" filepath="$PROJECT_DIR$/LiveBusLib/LiveBusLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/YCLiveDataBus.iml" filepath="$PROJECT_DIR$/.idea/YCLiveDataBus.iml" />
       <module fileurl="file://$PROJECT_DIR$/YCLiveDataBus.iml" filepath="$PROJECT_DIR$/YCLiveDataBus.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -13,6 +13,15 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * <pre>
+ *     @author 杨充
+ *     blog  : https://github.com/yangchong211
+ *     time  : 2019/12/23
+ *     desc  : 自定义LiveData<T>
+ *     revise:
+ * </pre>
+ */
 public class BusMutableLiveData<T> extends MutableLiveData<T> {
 
     private Map<Observer, Observer> observerMap = new HashMap<>();

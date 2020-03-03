@@ -26,6 +26,7 @@ public class WrapperObserver<T> implements Observer<T> {
     }
 
     private boolean isCallOnObserve() {
+        //返回一个表示堆栈转储的堆栈跟踪元素数组
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         if (stackTrace != null && stackTrace.length > 0) {
             for (StackTraceElement element : stackTrace) {
