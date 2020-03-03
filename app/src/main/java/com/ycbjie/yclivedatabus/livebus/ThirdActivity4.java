@@ -3,85 +3,113 @@ package com.ycbjie.yclivedatabus.livebus;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ycbjie.yclivedatabus.R;
+import com.ycbjie.yclivedatabus.constant.Constant;
 import com.ycbjie.yclivedatabus.model.TextViewModel;
+import com.yccx.livebuslib.event.LiveDataBus;
+import com.yccx.livebuslib.utils.BusLogUtils;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ThirdActivity4 extends AppCompatActivity {
 
     private TextView tvText;
-    private TextViewModel model;
-    private int count = 0;
+    private int sendCount = 0;
+    private int receiveCount = 0;
+    private int sendCount2 = 0;
+    private int receiveCount2 = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_third);
+        setContentView(R.layout.activity_third4);
         tvText = findViewById(R.id.tv_text);
-        findViewById(R.id.tv_click).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tv_2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count++;
-                String text;
-                switch (count%5){
-                    case 1:
-                        text = "小杨真的是一个逗比么";
-                        break;
-                    case 2:
-                        text = "逗比赶紧来star吧";
-                        break;
-                    case 3:
-                        text = "小杨想成为大神";
-                        break;
-                    case 4:
-                        text = "开始刷新数据啦";
-                        break;
-                    default:
-                        text = "变化成默认的数据";
-                        break;
-                }
-                model.getCurrentText().setValue(text);
+               postValueCountTest();
             }
         });
-        initLiveData();
-    }
-
-    private void initLiveData() {
-        // 创建一个持有某种数据类型的LiveData (通常是在ViewModel中)
-        model = ViewModelProviders.of(this).get(TextViewModel.class);
-        // 创建一个定义了onChange()方法的观察者
-        final Observer<String> nameObserver = new Observer<String>() {
+        findViewById(R.id.tv_3).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(@Nullable final String newText) {
-                // 更新数据
-                tvText.setText(newText);
+            public void onClick(View v) {
+                postValueCountTest2();
             }
-        };
-        // 通过 observe()方法连接观察者和LiveData，注意：observe()方法需要携带一个LifecycleOwner类
-        model.getCurrentText().observe(this, nameObserver);
+        });
+        LiveDataBus2.get()
+                .getChannel(Constant.LIVE_BUS3, String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        receiveCount++;
+                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---1-"+s+"----"+receiveCount);
+                    }
+                });
+        LiveDataBus.get()
+                .with(Constant.LIVE_BUS4, String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        receiveCount2++;
+                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---2-"+s+"----"+receiveCount2);
+                    }
+                });
     }
 
 
-    /*
-    //注意，不要写成员类，否则直接导致崩溃。
-    //报错日志：Cannot create an instance of class com.ycbjie.yclivedatabus.livebus.ThirdActivity$TextViewModel
-    public class TextViewModel extends ViewModel {
-
-        //LiveData是抽象类，MutableLiveData是具体实现类
-        private MutableLiveData<String> mCurrentText;
-
-        public MutableLiveData<String> getCurrentText() {
-            if (mCurrentText == null) {
-                mCurrentText = new MutableLiveData<>();
-            }
-            return mCurrentText;
+    public void postValueCountTest() {
+        sendCount = 100;
+        receiveCount = 0;
+        ExecutorService threadPool = Executors.newFixedThreadPool(2);
+        for (int i = 0; i < sendCount; i++) {
+            threadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    LiveDataBus2.get().getChannel(Constant.LIVE_BUS3).postValue("test_1_data"+sendCount);
+                }
+            });
         }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BusLogUtils.d("sendCount: " + sendCount + " | receiveCount: " + receiveCount);
+                Toast.makeText(ThirdActivity4.this, "sendCount: " + sendCount +
+                        " | receiveCount: " + receiveCount, Toast.LENGTH_LONG).show();
+            }
+        }, 1000);
+    }
 
-    }*/
+
+    public void postValueCountTest2() {
+        sendCount2 = 100;
+        receiveCount2 = 0;
+        ExecutorService threadPool = Executors.newFixedThreadPool(2);
+        for (int i = 0; i < sendCount2; i++) {
+            threadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    LiveDataBus.get().with(Constant.LIVE_BUS4).postValue("test_2_data"+sendCount2);
+                }
+            });
+        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BusLogUtils.d("sendCount2: " + sendCount2 + " | receiveCount2: " + receiveCount2);
+                Toast.makeText(ThirdActivity4.this, "sendCount2: " + sendCount2 +
+                        " | receiveCount2: " + receiveCount2, Toast.LENGTH_LONG).show();
+            }
+        }, 1000);
+    }
+
 
     @Override
     protected void onDestroy() {

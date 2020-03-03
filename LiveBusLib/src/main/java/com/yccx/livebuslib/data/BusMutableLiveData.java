@@ -4,8 +4,11 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 
+import com.yccx.livebuslib.helper.BusWeakHandler;
 import com.yccx.livebuslib.wrapper.WrapperObserver;
 
 import java.lang.reflect.Field;
@@ -25,6 +28,42 @@ import java.util.Map;
 public class BusMutableLiveData<T> extends MutableLiveData<T> {
 
     private Map<Observer, Observer> observerMap = new HashMap<>();
+    private BusWeakHandler mainHandler = new BusWeakHandler(Looper.getMainLooper());
+
+    private class PostValueTask implements Runnable {
+
+        private T newValue;
+
+        public PostValueTask(@NonNull T newValue) {
+            this.newValue = newValue;
+        }
+
+        @Override
+        public void run() {
+            setValue(newValue);
+        }
+    }
+
+    /**
+     * 主线程发送事件
+     * @param value                                 value
+     */
+    @Override
+    public void setValue(T value) {
+        //调用父类即可
+        super.setValue(value);
+    }
+
+    /**
+     * 子线程发送事件
+     * @param value                                 value
+     */
+    @Override
+    public void postValue(T value) {
+        //注意，去掉super方法，
+        //super.postValue(value);
+        mainHandler.post(new PostValueTask(value));
+    }
 
     /**
      * 在给定的观察者的生命周期内将给定的观察者添加到观察者列表所有者。事件是在主线程上分派的。

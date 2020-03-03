@@ -29,7 +29,7 @@ public final class LiveDataBus {
         return SingletonHolder.DEFAULT_BUS;
     }
 
-    public <T> BusMutableLiveData<T> with(String key, Class<T> type) {
+    public synchronized <T> BusMutableLiveData<T> with(String key, Class<T> type) {
         if (!bus.containsKey(key)) {
             bus.put(key, new BusMutableLiveData<>());
         }
