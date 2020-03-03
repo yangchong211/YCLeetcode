@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="1.使用eventBus测试粘性和非粘性事件"/>
+        android:text="1.查看LiveDataBus的消息，无点击事件"/>
 
 
     <TextView
@@ -26,16 +26,6 @@
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="2.eventBus使用在fragment中弊端"/>
-
-
-    <TextView
-        android:id="@+id/tv_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorAccent"
-        android:padding="10dp"
-        android:text="3.eventBus乱用导致出现的弊端"/>
+        android:text="2.发送LiveDataBus刷新fragment中的数据"/>
 
 </LinearLayout>

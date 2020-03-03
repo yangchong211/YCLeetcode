@@ -12,5 +12,5 @@ public class Constant {
 
     public static final String EVENT_BUS = "event_bus";
     public static final String EVENT_BUS2 = "event_bus2";
-
+    public static final String EVENT_BUS3 = "event_bus3";
 }

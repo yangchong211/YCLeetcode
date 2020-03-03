@@ -1,5 +1,6 @@
 package com.yccx.livebuslib.data;
 
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -9,6 +10,8 @@ import android.support.annotation.NonNull;
 
 import com.yccx.livebuslib.helper.BusWeakHandler;
 import com.yccx.livebuslib.inter.BusObservable;
+import com.yccx.livebuslib.utils.BusLibUtils;
+import com.yccx.livebuslib.utils.BusLogUtils;
 import com.yccx.livebuslib.wrapper.WrapperObserver;
 
 import java.lang.reflect.Field;
@@ -115,8 +118,37 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
      */
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<T> observer) {
+        //之前做法
+        //super.observe(owner, observer);
+        //hook(observer);
+        //下面操作可以修复订阅者会收到订阅之前发布的消息的问题
+        //获取LifecycleOwner的当前状态
+        Lifecycle lifecycle = owner.getLifecycle();
+        Lifecycle.State currentState = lifecycle.getCurrentState();
+        //获取生命周期观察者映射的大小
+        int observerSize = BusLibUtils.getLifecycleObserverMapSize(lifecycle);
+        //比较此状态是否大于或等于给定的{@code状态}。如果该状态大于或等于给定的{@code状态}，则为true
+        //目前是跟started状态对比
+        boolean needChangeState = currentState.isAtLeast(Lifecycle.State.STARTED);
+        BusLogUtils.d("--observe----------"+currentState.name()+"-----"+observerSize+"------"+needChangeState);
+        if (needChangeState) {
+            //更改LifecycleOwner的状态，把LifecycleOwner的状态改为INITIALIZED
+            BusLibUtils.setLifecycleState(lifecycle, Lifecycle.State.INITIALIZED);
+            //将observerSize设置为0，否则super.observe(owner, observer)的时候会无限循环
+            BusLibUtils.setLifecycleObserverMapSize(lifecycle, -1);
+        }
+        //调用父类的方法
         super.observe(owner, observer);
-        hook(observer);
+        if (needChangeState) {
+            //返回到LifecycleOwner状态
+            BusLibUtils.setLifecycleState(lifecycle, currentState);
+            //重置observer size，因为又添加了一个observer，所以数量+1
+            BusLibUtils.setLifecycleObserverMapSize(lifecycle, observerSize + 1);
+            //设置观察员活跃
+            hookObserverActive(observer, true);
+        }
+        //设置更改Observer的version
+        hookObserverVersion(observer);
     }
 
     /**
@@ -198,6 +230,61 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
                 fieldLastVersion = classObserverWrapper.getDeclaredField("mLastVersion");
                 fieldLastVersion.setAccessible(true);
                 Field fieldVersion = classLiveData.getDeclaredField("mVersion");
+                fieldVersion.setAccessible(true);
+                Object objectVersion = fieldVersion.get(this);
+                fieldLastVersion.set(objectWrapper, objectVersion);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void hookObserverActive(@NonNull Observer<T> observer, boolean active) {
+        try {
+            //get wrapper's version
+            Object objectWrapper = getObserverWrapper(observer);
+            if (objectWrapper == null) {
+                return;
+            }
+            Class<?> classObserverWrapper = objectWrapper.getClass().getSuperclass();
+            Field mActive = null;
+            if (classObserverWrapper != null) {
+                mActive = classObserverWrapper.getDeclaredField("mActive");
+                mActive.setAccessible(true);
+                mActive.set(objectWrapper, active);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Object getObserverWrapper(@NonNull Observer<T> observer) throws Exception {
+        Field fieldObservers = LiveData.class.getDeclaredField("mObservers");
+        fieldObservers.setAccessible(true);
+        Object objectObservers = fieldObservers.get(this);
+        Class<?> classObservers = objectObservers.getClass();
+        Method methodGet = classObservers.getDeclaredMethod("get", Object.class);
+        methodGet.setAccessible(true);
+        Object objectWrapperEntry = methodGet.invoke(objectObservers, observer);
+        Object objectWrapper = null;
+        if (objectWrapperEntry instanceof Map.Entry) {
+            objectWrapper = ((Map.Entry) objectWrapperEntry).getValue();
+        }
+        return objectWrapper;
+    }
+
+    private void hookObserverVersion(@NonNull Observer<T> observer) {
+        try {
+            Object objectWrapper = getObserverWrapper(observer);
+            if (objectWrapper == null) {
+                return;
+            }
+            Class<?> classObserverWrapper = objectWrapper.getClass().getSuperclass();
+            Field fieldLastVersion = null;
+            if (classObserverWrapper != null) {
+                fieldLastVersion = classObserverWrapper.getDeclaredField("mLastVersion");
+                fieldLastVersion.setAccessible(true);
+                Field fieldVersion = LiveData.class.getDeclaredField("mVersion");
                 fieldVersion.setAccessible(true);
                 Object objectVersion = fieldVersion.get(this);
                 fieldLastVersion.set(objectWrapper, objectVersion);

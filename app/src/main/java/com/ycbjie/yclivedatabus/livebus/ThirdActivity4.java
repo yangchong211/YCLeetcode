@@ -2,6 +2,7 @@ package com.ycbjie.yclivedatabus.livebus;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.ycbjie.yclivedatabus.model.TextViewModel;
 import com.yccx.livebuslib.event.LiveDataBus;
 import com.yccx.livebuslib.utils.BusLogUtils;
 
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -63,6 +65,24 @@ public class ThirdActivity4 extends AppCompatActivity {
                 LiveDataBus.get().with(Constant.LIVE_BUS5).stopPostInterval("doubi");
             }
         });
+        findViewById(R.id.tv_7).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testMessageSetBefore();
+            }
+        });
+        findViewById(R.id.tv_8).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessageSetBefore();
+            }
+        });
+        findViewById(R.id.tv_9).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ThirdActivity4.this,ThirdActivity5.class));
+            }
+        });
         initBus();
     }
 
@@ -101,6 +121,7 @@ public class ThirdActivity4 extends AppCompatActivity {
                         BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---5----"+s);
                     }
                 });
+        testBeforeOnCreate();
     }
 
 
@@ -147,6 +168,55 @@ public class ThirdActivity4 extends AppCompatActivity {
                         " | receiveCount2: " + receiveCount2, Toast.LENGTH_LONG).show();
             }
         }, 1000);
+    }
+
+
+
+    private void testBeforeOnCreate() {
+        //先发出一个消息
+        LiveDataBus.get().with("msg_before", String.class).setValue("msg set before");
+        //然后订阅这个消息
+        LiveDataBus.get()
+                .with("msg_before", String.class)
+                .observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        Toast.makeText(ThirdActivity4.this, "6---" + s, Toast.LENGTH_SHORT).show();
+                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---6----"+s);
+                    }
+                });
+    }
+
+    String randomKey;
+    public void testMessageSetBefore() {
+        //先动态生成一个key
+        randomKey = "key_random_" + new Random().nextInt();
+        //然后发出一个消息
+        LiveDataBus.get().with(randomKey, String.class).setValue("msg set before");
+        //然后订阅这个消息
+//        LiveDataBus.get()
+//                .with(randomKey, String.class)
+//                .observe(this, new Observer<String>() {
+//                    @Override
+//                    public void onChanged(@Nullable String s) {
+//                        Toast.makeText(ThirdActivity4.this, "7---" + s +"--"+randomKey, Toast.LENGTH_SHORT).show();
+//                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---7----"+s);
+//                    }
+//                });
+        LiveDataBus.get()
+                .with(randomKey, String.class)
+                .observeSticky(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        // 更新数据
+                        Toast.makeText(ThirdActivity4.this, "8---" + s +"--"+randomKey, Toast.LENGTH_SHORT).show();
+                        BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---8----"+s);
+                    }
+                });
+    }
+
+    public void sendMessageSetBefore() {
+        LiveDataBus.get().with(randomKey, String.class).setValue("msg set after");
     }
 
 

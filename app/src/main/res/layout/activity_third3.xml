@@ -74,7 +74,7 @@
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="7.跳转下一个页面测试是否是粘性事件"/>
+        android:text="7.先点击2，然后跳转下一个页面测试是否是粘性事件"/>
 
 
 </LinearLayout>

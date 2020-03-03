@@ -1,4 +1,4 @@
-package com.ycbjie.yclivedatabus.eventbus;
+package com.ycbjie.yclivedatabus.livebus;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,18 +12,12 @@ import android.view.View;
 
 import com.ycbjie.yclivedatabus.R;
 import com.ycbjie.yclivedatabus.base.BasePagerAdapter;
-import com.ycbjie.yclivedatabus.constant.Constant;
-import com.ycbjie.yclivedatabus.livebus.ThirdActivity1;
-import com.ycbjie.yclivedatabus.livebus.ThirdActivity2;
-import com.ycbjie.yclivedatabus.livebus.ThirdActivity3;
-import com.yccx.livebuslib.utils.BusLogUtils;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.ycbjie.yclivedatabus.eventbus.SendEventActivity;
+import com.ycbjie.yclivedatabus.eventbus.TestEventFragment;
 
 import java.util.ArrayList;
 
-public class SecondActivity2 extends AppCompatActivity {
+public class ThirdActivity5 extends AppCompatActivity {
 
 
     private TabLayout mTab;
@@ -38,7 +32,7 @@ public class SecondActivity2 extends AppCompatActivity {
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SecondActivity2.this,SendEventActivity.class));
+                startActivity(new Intent(ThirdActivity5.this,SendLiveBusActivity.class));
             }
         });
     }
@@ -63,16 +57,16 @@ public class SecondActivity2 extends AppCompatActivity {
         mTitleList.add("逗比");
         mTitleList.add("爱情");
         mTitleList.add("傻子");
-        mFragments.add(new TestEventFragment());
-        mFragments.add(new TestEventFragment());
-        mFragments.add(new TestEventFragment());
-        mFragments.add(new TestEventFragment());
-        mFragments.add(new TestEventFragment());
-        mFragments.add(new TestEventFragment());
-        mFragments.add(new TestEventFragment());
-        mFragments.add(new TestEventFragment());
-        mFragments.add(new TestEventFragment());
-        mFragments.add(new TestEventFragment());
+        mFragments.add(new TestLiveBusFragment());
+        mFragments.add(new TestLiveBusFragment());
+        mFragments.add(new TestLiveBusFragment());
+        mFragments.add(new TestLiveBusFragment());
+        mFragments.add(new TestLiveBusFragment());
+        mFragments.add(new TestLiveBusFragment());
+        mFragments.add(new TestLiveBusFragment());
+        mFragments.add(new TestLiveBusFragment());
+        mFragments.add(new TestLiveBusFragment());
+        mFragments.add(new TestLiveBusFragment());
 
         /*
          * 注意使用的是：getChildFragmentManager，
