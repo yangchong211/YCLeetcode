@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="1.使用eventBus遇到的问题"/>
+        android:text="1.使用rx2完成事件总线"/>
 
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="2.使用RxBus遇到的问题"/>
+        android:text="2.使用rx2发送粘性消息事件"/>
 
 
     <TextView
@@ -36,7 +36,7 @@
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="3.简单使用liveData操作步骤"/>
+        android:text="3.使用rx2"/>
 
 
 </LinearLayout>

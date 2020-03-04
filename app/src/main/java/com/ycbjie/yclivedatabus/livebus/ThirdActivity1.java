@@ -64,6 +64,13 @@ public class ThirdActivity1 extends AppCompatActivity {
         };
         // 通过 observe()方法连接观察者和LiveData，注意：observe()方法需要携带一个LifecycleOwner类
         model.getCurrentText().observe(this, nameObserver);
+
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+                model.getCurrentText().observe(ThirdActivity1.this, nameObserver);
+            }
+        }).start();*/
     }
 
 

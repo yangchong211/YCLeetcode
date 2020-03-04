@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.ycbjie.yclivedatabus.activity.FirstActivity;
+import com.ycbjie.yclivedatabus.rxbus.FirstActivity;
 import com.ycbjie.yclivedatabus.eventbus.SecondActivity;
 import com.ycbjie.yclivedatabus.livebus.ThirdActivity;
 

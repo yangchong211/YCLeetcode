@@ -18,7 +18,7 @@ public class SafeCastObserver<T> implements Observer<T> {
     @NonNull
     private final Observer<T> observer;
 
-    SafeCastObserver(@NonNull Observer<T> observer) {
+    public SafeCastObserver(@NonNull Observer<T> observer) {
         this.observer = observer;
     }
 

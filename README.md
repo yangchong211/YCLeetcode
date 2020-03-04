@@ -15,7 +15,13 @@
 ### 01.先提出问题思考
 
 
+
 ### 02.该liveDataBus优势
+- 1.该LiveDataBus的实现比较简单，支持发送普通事件，也支持发送粘性事件；
+- 2.该LiveDataBus支持发送延迟事件消息，也可以用作轮训延迟事件(比如商城类项目某活动页面5秒钟刷一次接口数据)，支持stop轮训操作
+- 3.该LiveDataBus可以减小APK包的大小，由于LiveDataBus只依赖Android官方Android Architecture Components组件的LiveData；
+- 4.该LiveDataBus具有生命周期感知，这个是一个很大的优势。不需要反注册，避免了内存泄漏等问题；
+
 
 
 ### 03.EventBus使用原理
@@ -25,6 +31,12 @@
     - ![image](https://github.com/yangchong211/YCLiveDataBus/blob/master/image/eventbus2.png)
 - 订阅/发布模式和观察者模式之间有着微弱的区别，个人觉得订阅/发布模式是观察者模式的一种增强版。两者区别如下所示。
     - ![image摘自网络](https://github.com/yangchong211/YCLiveDataBus/blob/master/image/eventbus3.png)
+- LiveDataBus的组成
+    - 消息： 消息可以是任何的 Object，可以定义不同类型的消息，如 Boolean、String。也可以定义自定义类型的消息。
+    - 消息通道： LiveData 扮演了消息通道的角色，不同的消息通道用不同的名字区分，名字是 String 类型的，可以通过名字获取到一个 LiveData 消息通道。
+    - 消息总线： 消息总线通过单例实现，不同的消息通道存放在一个 HashMap 中。
+    - 订阅： 订阅者通过 with() 获取消息通道，然后调用 observe() 订阅这个通道的消息。
+    - 发布： 发布者通过 with() 获取消息通道，然后调用 setValue() 或者 postValue() 发布消息。
 
 
 
@@ -64,8 +76,9 @@
 - ![image](https://github.com/yangchong211/YCLiveDataBus/blob/master/image/liveDataBus1.png)
 
 
-
 ### 08.该库使用api方法
+
+
 
 
 ### 09.事件消息系列博客
@@ -73,13 +86,15 @@
     - 01.EventBus简单介绍
     - 02.EventBus简单使用
     - 03.EventBus优缺点
-    - 04.EventBus实现原理
+    - 04.什么是发布/订阅模式
+    - 05.EventBus实现原理
+    - 06.EventBus重大问题
 - [02.RxBus](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/02.RxBus.md)
     - 01.RxBus是什么
     - 02.RxBus原理是什么
     - 03.RxBus简单实现
     - 04.RxBus优质库
-    - 05.简单使用
+    - 05.简单使用代码案例
 - [03.LiveData简单介绍](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/03.LiveData简单介绍.md)
     - 01.LiveData是什么东西
     - 02.为何要使用LiveData
@@ -100,8 +115,19 @@
     - 08.如何发送延迟事件消息
     - 09.如何发送轮训延迟事件
 - [05.EventBus源码分析](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/05.EventBus源码分析.md)
+    - 01.EventBus注册源码解析
+    - 02.EventBus事件分发解析
+    - 03.EventBus取消注册解析
+    - 04.总结一下EventBus的工作原理
 - [06.RxBus源码分析](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/06.RxBus源码分析.md)
+    - 01.后续更新
 - [07.LiveData源码分析](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/07.LiveData源码分析.md)
+    - 01.LiveData的原理介绍
+    - 02.然后思考一些问题
+    - 03.observe订阅源码分析
+    - 04.setValue发送源码分析
+    - 05.LiveData源码总结
+    - 06.LiveData流程图绘制
 - [08.Lifecycle源码分析](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/08.Lifecycle源码分析.md)
 - [09.观察者模式](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/09.观察者模式.md)
 - [10.事件总线封装库](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/10.事件总线封装库.md)

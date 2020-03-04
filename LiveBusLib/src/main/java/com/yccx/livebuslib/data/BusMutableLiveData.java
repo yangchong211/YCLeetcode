@@ -130,33 +130,7 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
         //hook(observer);
         //下面操作可以修复订阅者会收到订阅之前发布的消息的问题
         //获取LifecycleOwner的当前状态
-        SafeCastObserver<T> safeCastObserver = new SafeCastObserver<>(observer);
-        Lifecycle lifecycle = owner.getLifecycle();
-        Lifecycle.State currentState = lifecycle.getCurrentState();
-        //获取生命周期观察者映射的大小
-        int observerSize = BusLibUtils.getLifecycleObserverMapSize(lifecycle);
-        //比较此状态是否大于或等于给定的{@code状态}。如果该状态大于或等于给定的{@code状态}，则为true
-        //目前是跟started状态对比
-        boolean needChangeState = currentState.isAtLeast(Lifecycle.State.STARTED);
-        BusLogUtils.d("--observe----------"+currentState.name()+"-----"+observerSize+"------"+needChangeState);
-        if (needChangeState) {
-            //更改LifecycleOwner的状态，把LifecycleOwner的状态改为INITIALIZED
-            BusLibUtils.setLifecycleState(lifecycle, Lifecycle.State.INITIALIZED);
-            //将observerSize设置为0，否则super.observe(owner, observer)的时候会无限循环
-            BusLibUtils.setLifecycleObserverMapSize(lifecycle, -1);
-        }
-        //调用父类的方法
-        super.observe(owner, safeCastObserver);
-        if (needChangeState) {
-            //返回到LifecycleOwner状态
-            BusLibUtils.setLifecycleState(lifecycle, currentState);
-            //重置observer size，因为又添加了一个observer，所以数量+1
-            BusLibUtils.setLifecycleObserverMapSize(lifecycle, observerSize + 1);
-            //设置观察员活跃
-            hookObserverActive(safeCastObserver, true);
-        }
-        //设置更改Observer的version
-        hookObserverVersion(safeCastObserver);
+        setHook(owner,observer);
     }
 
     /**
@@ -212,6 +186,36 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
     @Override
     public void observeStickyForever(@NonNull Observer<T> observer) {
         super.observeForever(observer);
+    }
+
+    private void setHook(LifecycleOwner owner, Observer<T> observer) {
+        SafeCastObserver<T> safeCastObserver = new SafeCastObserver<>(observer);
+        Lifecycle lifecycle = owner.getLifecycle();
+        Lifecycle.State currentState = lifecycle.getCurrentState();
+        //获取生命周期观察者映射的大小
+        int observerSize = BusLibUtils.getLifecycleObserverMapSize(lifecycle);
+        //比较此状态是否大于或等于给定的{@code状态}。如果该状态大于或等于给定的{@code状态}，则为true
+        //目前是跟started状态对比
+        boolean needChangeState = currentState.isAtLeast(Lifecycle.State.STARTED);
+        BusLogUtils.d("--observe----------"+currentState.name()+"-----"+observerSize+"------"+needChangeState);
+        if (needChangeState) {
+            //更改LifecycleOwner的状态，把LifecycleOwner的状态改为INITIALIZED
+            BusLibUtils.setLifecycleState(lifecycle, Lifecycle.State.INITIALIZED);
+            //将observerSize设置为0，否则super.observe(owner, observer)的时候会无限循环
+            BusLibUtils.setLifecycleObserverMapSize(lifecycle, -1);
+        }
+        //调用父类的方法
+        super.observe(owner, safeCastObserver);
+        if (needChangeState) {
+            //返回到LifecycleOwner状态
+            BusLibUtils.setLifecycleState(lifecycle, currentState);
+            //重置observer size，因为又添加了一个observer，所以数量+1
+            BusLibUtils.setLifecycleObserverMapSize(lifecycle, observerSize + 1);
+            //设置观察员活跃
+            hookObserverActive(safeCastObserver, true);
+        }
+        //设置更改Observer的version
+        hookObserverVersion(safeCastObserver);
     }
 
     /**
