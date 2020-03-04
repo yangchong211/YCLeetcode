@@ -162,6 +162,8 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
         }
         super.removeObserver(realObserver);
         if (!hasObservers() && LiveDataBus.get().getBus()!=null) {
+            // 当对应liveData没有相关的观察者的时候
+            // 就可以移除掉维护的LiveData
             LiveDataBus.get().getBus().remove(mKey);
         }
     }
@@ -186,6 +188,19 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
     @Override
     public void observeStickyForever(@NonNull Observer<T> observer) {
         super.observeForever(observer);
+    }
+
+    /**
+     * 当活动观察者的数量从1变为0时调用。
+     */
+    @Override
+    protected void onInactive() {
+        super.onInactive();
+        /*if (!hasObservers() && LiveDataBus.get().getBus()!=null) {
+            // 当对应liveData没有相关的观察者的时候
+            // 就可以移除掉维护的LiveData
+            LiveDataBus.get().getBus().remove(mKey);
+        }*/
     }
 
     private void setHook(LifecycleOwner owner, Observer<T> observer) {
