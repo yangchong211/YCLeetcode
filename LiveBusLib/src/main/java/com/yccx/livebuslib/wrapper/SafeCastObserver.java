@@ -24,10 +24,13 @@ public class SafeCastObserver<T> implements Observer<T> {
 
     @Override
     public void onChanged(@Nullable T t) {
+        //捕获异常，避免出现异常之后，收不到后续的消息事件
         try {
             //注意为了避免转换出现的异常，try-catch捕获
             observer.onChanged(t);
         } catch (ClassCastException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -29,9 +29,12 @@ public class WrapperObserver<T> implements Observer<T> {
         if (isCallOnObserve()) {
             return;
         }
+        //捕获异常，避免出现异常之后，收不到后续的消息事件
         try {
             observer.onChanged(t);
         } catch (ClassCastException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
