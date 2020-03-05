@@ -41,6 +41,12 @@ public class BusLibUtils {
         return Looper.getMainLooper().getThread() == Thread.currentThread();
     }
 
+    public static void checkNull(Object object){
+        if (object == null){
+            throw new NullPointerException("the live bus parameter must be non-null");
+        }
+    }
+
     /**
      * 获取生命周期观察者映射的大小
      * @param lifecycle                             lifecycle

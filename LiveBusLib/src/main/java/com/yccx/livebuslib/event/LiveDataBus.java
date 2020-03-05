@@ -17,6 +17,8 @@ package com.yccx.livebuslib.event;
 
 import com.yccx.livebuslib.data.BusLiveData;
 import com.yccx.livebuslib.data.BusMutableLiveData;
+import com.yccx.livebuslib.utils.BusLibUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,6 +52,8 @@ public final class LiveDataBus {
     }
 
     public synchronized <T> BusMutableLiveData<T> with(String key, Class<T> type) {
+        BusLibUtils.checkNull(key);
+        BusLibUtils.checkNull(type);
         if (!bus.containsKey(key)) {
             bus.put(key, new BusMutableLiveData<>(key));
         }
@@ -57,6 +61,7 @@ public final class LiveDataBus {
     }
 
     public BusMutableLiveData<Object> with(String key) {
+        BusLibUtils.checkNull(key);
         return with(key, Object.class);
     }
 
