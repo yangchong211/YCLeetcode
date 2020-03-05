@@ -30,18 +30,19 @@
 
 
 ### 03.EventBus使用原理
-- 框架的核心思想，就是消息的发布和订阅，使用订阅者模式实现，其原理图大概如下所示。
-    - ![image](https://github.com/yangchong211/YCLiveDataBus/blob/master/image/eventbus1.png)
-- 发布和订阅之间的依赖关系，其原理图大概如下所示。
-    - ![image](https://github.com/yangchong211/YCLiveDataBus/blob/master/image/eventbus2.png)
-- 订阅/发布模式和观察者模式之间有着微弱的区别，个人觉得订阅/发布模式是观察者模式的一种增强版。两者区别如下所示。
-    - ![image摘自网络](https://github.com/yangchong211/YCLiveDataBus/blob/master/image/eventbus3.png)
+- 框架的核心思想，就是消息的发布和订阅，使用订阅者模式实现，其原理图大概如下所示，摘自网络。
+    - ![image](https://img-blog.csdnimg.cn/20200305174827897.png)
+- 发布和订阅之间的依赖关系，其原理图大概如下所示，摘自网络。
+    - ![image](https://img-blog.csdnimg.cn/20200305174749401.png)
+- 订阅/发布模式和观察者模式之间有着微弱的区别，个人觉得订阅/发布模式是观察者模式的一种增强版。两者区别如下所示，摘自网络。
+    - ![image摘自网络](https://img-blog.csdnimg.cn/20200305174854437.png)
 - LiveDataBus的组成
     - 消息： 消息可以是任何的 Object，可以定义不同类型的消息，如 Boolean、String。也可以定义自定义类型的消息。
     - 消息通道： LiveData 扮演了消息通道的角色，不同的消息通道用不同的名字区分，名字是 String 类型的，可以通过名字获取到一个 LiveData 消息通道。
     - 消息总线： 消息总线通过单例实现，不同的消息通道存放在一个 HashMap 中。
     - 订阅： 订阅者通过 with() 获取消息通道，然后调用 observe() 订阅这个通道的消息。
     - 发布： 发布者通过 with() 获取消息通道，然后调用 setValue() 或者 postValue() 发布消息。
+
 
 
 ### 04.RxBus使用原理
