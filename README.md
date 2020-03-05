@@ -141,7 +141,8 @@
     ```
 - observeForever模式订阅消息，需要调用removeObserver取消订阅
     ```
-    LiveDataBus.get(Constant.YC_BUS, String.class)
+    LiveDataBus.get()
+            .with(Constant.YC_BUS, String.class)
             .observeStickyForever(observer);
     ```
 
