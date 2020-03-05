@@ -13,6 +13,11 @@
 
 
 ### 01.先提出问题思考
+- 能否利用LiveData的特有功能实现类似EventBus事件总线的功能？
+- 针对EventBus，RxBus，为何要弄LiveDataBus，它具有那些优势？
+- 如何利用LiveData生命周期感知这个功能，在实现事件总线上注意那些问题？
+- 怎样实现粘性和非粘性的事件消息，能否弄个延迟发送事件的功能，以及轮训发送事件功能？
+- 事件总线如果在订阅或者发送中某个环节抛出异常，如何才能不影响后续的功能？
 
 
 
@@ -40,6 +45,10 @@
 
 
 ### 04.RxBus使用原理
+- RxBus不是一个库，而是一个文件，实现只有短短30行代码。RxBus本身不需要过多分析，它的强大完全来自于它基于的RxJava技术。
+- 在RxJava中有个Subject类，它继承Observable类，同时实现了Observer接口，因此Subject可以同时担当订阅者和被订阅者的角色，我们使用Subject的子类PublishSubject来创建一个Subject对象（PublishSubject只有被订阅后才会把接收到的事件立刻发送给订阅者），在需要接收事件的地方，订阅该Subject对象，之后如果Subject对象接收到事件，则会发射给该订阅者，此时Subject对象充当被订阅者的角色。
+- 完成了订阅，在需要发送事件的地方将事件发送给之前被订阅的Subject对象，则此时Subject对象作为订阅者接收事件，然后会立刻将事件转发给订阅该Subject对象的订阅者，以便订阅者处理相应事件，到这里就完成了事件的发送与处理。
+- 最后就是取消订阅的操作了，RxJava中，订阅操作会返回一个Subscription对象，以便在合适的时机取消订阅，防止内存泄漏，如果一个类产生多个Subscription对象，我们可以用一个CompositeSubscription存储起来，以进行批量的取消订阅。
 
 
 
@@ -219,8 +228,8 @@
     - 02.然后思考一些问题
     - 03.observe订阅源码分析
     - 04.setValue发送源码分析
-    - 05.LiveData源码总结
-    - 06.LiveData流程图绘制
+    - 05.observeForever源码
+    - 06.LiveData源码总结
 - [08.Lifecycle源码分析](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/08.Lifecycle源码分析.md)
 - [09.观察者模式](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/09.观察者模式.md)
 - [10.事件总线封装库](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/10.事件总线封装库.md)
@@ -231,7 +240,8 @@
 ### 10.遇到问题思考汇总
 
 
-### 参考内容
+### 11.其他内容介绍
+#### 11.1 参考内容
 - https://github.com/bennidi/mbassador
 - https://github.com/zalando/nakadi
 - https://github.com/JeremyLiao/SmartEventBus
@@ -239,8 +249,54 @@
 - https://github.com/sunyatas/NetStatusBus
 
 
+#### 11.2 开源项目推荐
+- [1.开源博客汇总](https://github.com/yangchong211/YCBlogs)
+- [2.组件化实践项目](https://github.com/yangchong211/LifeHelper)
+- [3.视频播放器封装库](https://github.com/yangchong211/YCVideoPlayer)
+- [4.状态切换管理器封装库](https://github.com/yangchong211/YCStateLayout)
+- [5.复杂RecyclerView封装库](https://github.com/yangchong211/YCRefreshView)
+- [6.弹窗封装库](https://github.com/yangchong211/YCDialog)
+- [7.版本更新封装库](https://github.com/yangchong211/YCUpdateApp)
+- [8.状态栏封装库](https://github.com/yangchong211/YCStatusBar)
+- [9.轻量级线程池封装库](https://github.com/yangchong211/YCThreadPool)
+- [10.轮播图封装库](https://github.com/yangchong211/YCBanner)
+- [11.音频播放器](https://github.com/yangchong211/YCAudioPlayer)
+- [12.画廊与图片缩放控件](https://github.com/yangchong211/YCGallery)
+- [13.Python多渠道打包](https://github.com/yangchong211/YCWalleHelper)
+- [14.整体侧滑动画封装库](https://github.com/yangchong211/YCSlideView)
+- [15.Python爬虫妹子图](https://github.com/yangchong211/YCMeiZiTu)
+- [17.自定义进度条](https://github.com/yangchong211/YCProgress)
+- [18.自定义折叠和展开布局](https://github.com/yangchong211/YCExpandView)
+- [19.商品详情页分页加载](https://github.com/yangchong211/YCShopDetailLayout)
+- [20.在任意View控件上设置红点控件](https://github.com/yangchong211/YCRedDotView)
+- [21.仿抖音一次滑动一个页面播放视频库](https://github.com/yangchong211/YCScrollPager)
 
 
+
+
+#### 11.3 其他推荐
+- 博客笔记大汇总【15年10月到至今】，包括Java基础及深入知识点，Android技术博客，Python学习笔记等等，还包括平时开发中遇到的bug汇总，当然也在工作之余收集了大量的面试题，长期更新维护并且修正，持续完善……开源的文件是markdown格式的！同时也开源了生活博客，从12年起，积累共计47篇[近100万字]，转载请注明出处，谢谢！
+- 链接地址：https://github.com/yangchong211/YCBlogs
+- 如果觉得好，可以star一下，谢谢！当然也欢迎提出建议，万事起于忽微，量变引起质变！
+
+
+
+#### 11.4 关于LICENSE
+```
+Copyright 2017 yangchong211（github.com/yangchong211）
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 
 
 
