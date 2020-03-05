@@ -9,6 +9,7 @@ public class Constant {
     public static final String LIVE_BUS5 = "live_bus5";
     public static final String LIVE_BUS1 = "live_bus1";
     public static final String LIVE_BUS2 = "live_bus2";
+    public static final String LIVE_BUS6 = "live_bus6";
 
     public static final String EVENT_BUS = "event_bus";
     public static final String EVENT_BUS2 = "event_bus2";

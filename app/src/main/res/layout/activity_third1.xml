@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="1.简单使用liveData刷新数据"/>
+        android:text="1.文本展示liveData的数据，显示数据"/>
 
 
     <TextView
@@ -26,10 +26,27 @@
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="2.点击使用liveData更新数据"/>
+        android:text="2.使用LiveData配合ViewModel更新数据"/>
 
 
+    <TextView
+        android:id="@+id/tv_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:text="3.文本展示liveData的数据，显示数据"/>
 
+
+    <TextView
+        android:id="@+id/tv_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:text="4.单独使用LiveData刷新数据"/>
 
 
 </LinearLayout>

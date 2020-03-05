@@ -4,7 +4,7 @@
 - 02.该liveDataBus优势
 - 03.EventBus使用原理
 - 04.RxBus使用原理
-- 05.它们之间优缺点对比
+- 05.三者之间优缺点对比
 - 06.LiveDataBus的组成
 - 07.LiveDataBus原理图
 - 08.该库使用api方法
@@ -39,11 +39,11 @@
     - 发布： 发布者通过 with() 获取消息通道，然后调用 setValue() 或者 postValue() 发布消息。
 
 
-
 ### 04.RxBus使用原理
 
 
-### 05.它们之间优缺点对比
+
+### 05.三者之间优缺点对比
 - 对比结果如下所示
     | 事件总线 | 发送粘性事件 | 是否有序接收消息 | 延迟发送 | 组建生命周期感知 | 跨线程发事件 |
     | :------ | :--------- | :------------- | :------ | :-------------- | :-------- | 
@@ -77,7 +77,92 @@
 
 
 ### 08.该库使用api方法
+#### 8.1 最简单常见的发布/订阅事件消息
+- 订阅事件，该种使用方式不需要取消订阅
+    ```
+    LiveDataBus.get()
+            .with(Constant.YC_BUS, String.class)
+            .observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(@Nullable String newText) {
+                    // 更新数据
+                    BusLogUtils.d("接收消息--------yc_bus---2-"+newText);
+                }
+            });
+    ```
+- 那么如何发布事件消息呢，代码如下
+    ```
+    LiveDataBus.get().with(Constant.YC_BUS).setValue("test_yc_data");
+    LiveDataBus.get().with(Constant.YC_BUS).postValue("test_yc_data");
+    ```
 
+
+#### 8.2 Forever模式订阅和取消订阅消息
+- 订阅事件，该种使用方式不需要取消订阅
+    ```
+    private Observer<String> observer = new Observer<String>() {
+        @Override
+        public void onChanged(@Nullable String s) {
+            Toast.makeText(ThirdActivity.this, s, Toast.LENGTH_SHORT).show();
+        }
+    };
+    
+    LiveDataBus.get()
+            .with(Constant.LIVE_BUS, String.class)
+            .observeForever(observer);
+    ```
+- 这个时候需要手动移除observer观察者
+    ```
+    LiveDataBus.get()
+           .with(Constant.LIVE_BUS, String.class)
+           .removeObserver(observer);
+    ```
+- 发送消息同上一样
+
+
+
+#### 8.3 发送粘性事件消息
+- 订阅事件，该种使用方式不需要取消订阅
+    ```
+    LiveDataBus.get()
+            .with(Constant.YC_BUS, String.class)
+            .observeSticky(this, new Observer<String>() {
+                @Override
+                public void onChanged(@Nullable String s) {
+                    // 更新数据
+                    BusLogUtils.d("接收消息--------yc_bus---8----"+s);
+                }
+            });
+    ```
+- 那么如何发布事件消息呢，代码如下
+    ```
+    LiveDataBus.get().with(Constant.YC_BUS).setValue("test_yc_data");
+    LiveDataBus.get().with(Constant.YC_BUS).postValue("test_yc_data");
+    ```
+- observeForever模式订阅消息，需要调用removeObserver取消订阅
+    ```
+    LiveDataBus.get(Constant.YC_BUS, String.class)
+            .observeStickyForever(observer);
+    ```
+
+
+#### 8.4 如何发送延迟消息
+- 该lib拥有延迟发送消息事件的功能，发送事件消息代码如下
+    ```
+    //延迟5秒发送事件消息
+    LiveDataBus.get().with(Constant.LIVE_BUS).postValueDelay("test_data",5000);
+    ```
+
+
+#### 8.5 如何发送轮训延迟消息
+- 这种场景主要应用在购物类的需求中，比如一个活动页面，每个5秒刷新一下接口数据更新页面活动
+    ```
+    //开始轮训
+    LiveDataBus.get().with(Constant.LIVE_BUS5).postValueInterval("test_data",3000, "doubi");
+    
+    //停止轮训
+    LiveDataBus.get().with(Constant.LIVE_BUS5).stopPostInterval("doubi");
+    ```
 
 
 

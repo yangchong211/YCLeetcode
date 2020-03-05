@@ -30,6 +30,13 @@ public class ThirdActivity4 extends AppCompatActivity {
     private int sendCount2 = 0;
     private int receiveCount2 = 0;
 
+    private Observer<String> observer = new Observer<String>() {
+        @Override
+        public void onChanged(@Nullable String s) {
+            Toast.makeText(ThirdActivity4.this, s, Toast.LENGTH_SHORT).show();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +128,9 @@ public class ThirdActivity4 extends AppCompatActivity {
                         BusLogUtils.d("接收消息--ThirdActivity4------yc_bus---5----"+s);
                     }
                 });
+        LiveDataBus.get()
+                .with(Constant.LIVE_BUS6, String.class)
+                .observeForever(observer);
         testBeforeOnCreate();
     }
 
@@ -223,5 +233,8 @@ public class ThirdActivity4 extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LiveDataBus.get()
+                .with(Constant.LIVE_BUS6, String.class)
+                .removeObserver(observer);
     }
 }
