@@ -73,7 +73,14 @@
 
 
 ### 07.LiveDataBus原理图
-- ![image](https://github.com/yangchong211/YCLiveDataBus/blob/master/image/liveDataBus1.png)
+#### 7.1 订阅和注册的流程图
+- ![image](https://img-blog.csdnimg.cn/20200305173032750.jpg)
+
+
+#### 7.1 订阅注册原理图
+![image](https://img-blog.csdnimg.cn/2020030517313021.jpg)
+
+
 
 
 ### 08.该库使用api方法
@@ -97,7 +104,7 @@
     ```
 
 
-#### 8.2 Forever模式订阅和取消订阅消息
+#### 8.2 Forever模式订阅和取消订阅消息【一直会收到通知】
 - 订阅事件，该种使用方式不需要取消订阅
     ```
     private Observer<String> observer = new Observer<String>() {
@@ -117,7 +124,7 @@
            .with(Constant.LIVE_BUS, String.class)
            .removeObserver(observer);
     ```
-- 发送消息同上一样
+- 发送消息同上一样，需要注意，发送这种消息，需要手动移除观察者，它表示不管在什么状态下都会收到发出的消息事件。
 
 
 

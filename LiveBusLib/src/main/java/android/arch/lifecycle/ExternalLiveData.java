@@ -64,6 +64,10 @@ public class ExternalLiveData<T> extends MutableLiveData<T> {
             super(owner, observer);
         }
 
+        /**
+         *
+         * @return
+         */
         @Override
         boolean shouldBeActive() {
             return mOwner.getLifecycle().getCurrentState().isAtLeast(observerActiveLevel());
