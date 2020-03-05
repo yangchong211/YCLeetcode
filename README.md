@@ -67,8 +67,8 @@
 - 消息： 消息可以是任何的 Object，可以定义不同类型的消息，如 Boolean、String。也可以定义自定义类型的消息。
 - 消息通道： LiveData 扮演了消息通道的角色，不同的消息通道用不同的名字区分，名字是 String 类型的，可以通过名字获取到一个 LiveData 消息通道。
 - 消息总线： 消息总线通过单例实现，不同的消息通道存放在一个 HashMap 中。
-- 订阅： 订阅者通过 getChannel() 获取消息通道，然后调用 observe() 订阅这个通道的消息。
-- 发布： 发布者通过 getChannel() 获取消息通道，然后调用 setValue() 或者 postValue() 发布消息。
+- 订阅： 订阅者通过 with() 获取消息通道，然后调用 observe() 订阅这个通道的消息。
+- 发布： 发布者通过 with() 获取消息通道，然后调用 setValue() 或者 postValue() 发布消息。
 
 
 
