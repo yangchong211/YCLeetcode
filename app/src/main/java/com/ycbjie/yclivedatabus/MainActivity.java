@@ -9,6 +9,7 @@ import com.ycbjie.yclivedatabus.lifecycle.FourActivity;
 import com.ycbjie.yclivedatabus.rxbus.FirstActivity;
 import com.ycbjie.yclivedatabus.eventbus.SecondActivity;
 import com.ycbjie.yclivedatabus.livebus.ThirdActivity;
+import com.yccx.livebuslib.utils.BusLogUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        BusLogUtils.setIsLog(true);
 
         findViewById(R.id.tv_1).setOnClickListener(this);
         findViewById(R.id.tv_2).setOnClickListener(this);
