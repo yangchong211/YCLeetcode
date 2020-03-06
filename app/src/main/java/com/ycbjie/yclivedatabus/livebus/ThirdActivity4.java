@@ -1,7 +1,6 @@
 package com.ycbjie.yclivedatabus.livebus;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,14 +12,12 @@ import android.widget.Toast;
 
 import com.ycbjie.yclivedatabus.R;
 import com.ycbjie.yclivedatabus.constant.Constant;
-import com.ycbjie.yclivedatabus.model.TextViewModel;
 import com.yccx.livebuslib.event.LiveDataBus;
 import com.yccx.livebuslib.utils.BusLogUtils;
 
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class ThirdActivity4 extends AppCompatActivity {
 

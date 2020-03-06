@@ -8,11 +8,6 @@ import android.widget.TextView;
 
 import com.ycbjie.yclivedatabus.R;
 import com.ycbjie.yclivedatabus.constant.Constant;
-import com.ycbjie.yclivedatabus.livebus.StickyLiveActivity;
-import com.ycbjie.yclivedatabus.livebus.ThirdActivity1;
-import com.ycbjie.yclivedatabus.livebus.ThirdActivity2;
-import com.ycbjie.yclivedatabus.livebus.ThirdActivity3;
-import com.ycbjie.yclivedatabus.model.TextViewModel;
 import com.yccx.livebuslib.utils.BusLogUtils;
 
 import org.greenrobot.eventbus.Subscribe;

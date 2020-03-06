@@ -36,7 +36,7 @@
         <activity android:name=".livebus.StickyLiveActivity"/>
         <activity android:name=".livebus.SendLiveBusActivity"/>
 
-        <activity android:name=".activity.FourActivity"/>
+        <activity android:name=".lifecycle.FourActivity"/>
     </application>
 
 </manifest>

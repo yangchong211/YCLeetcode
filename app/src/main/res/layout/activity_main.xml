@@ -38,5 +38,13 @@
         android:padding="10dp"
         android:text="3.简单使用liveData操作步骤"/>
 
+    <TextView
+        android:id="@+id/tv_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:text="4.简单使用Lifecycle操作步骤"/>
 
 </LinearLayout>

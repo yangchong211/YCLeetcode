@@ -1,4 +1,4 @@
-package com.ycbjie.yclivedatabus.model;
+package com.ycbjie.yclivedatabus.livebus;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
