@@ -221,15 +221,13 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
         }*/
     }
 
-
-    public static <T> WrapperObserver createForeverObserver(Observer<T> observer) {
+    private <T> WrapperObserver createForeverObserver(Observer<T> observer) {
         return new WrapperObserver(observer, "android.arch.lifecycle.LiveData", "observeForever");
     }
 
-    public static <T> WrapperObserver createStateObserver(Observer<T> observer) {
+    private <T> WrapperObserver createStateObserver(Observer<T> observer) {
         return new WrapperObserver(observer, "android.arch.lifecycle.LiveData$LifecycleBoundObserver", "onStateChanged");
     }
-
 
     private void setHook(LifecycleOwner owner, Observer<T> observer) {
         SafeCastObserver<T> safeCastObserver = new SafeCastObserver<>(observer);
