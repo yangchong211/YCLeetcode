@@ -29,10 +29,20 @@ import android.support.annotation.Nullable;
  */
 public class WrapperObserver<T> implements Observer<T> {
 
-    private Observer<T> observer;
+    private final Observer<T> observer;
+    private final String filterClass;
+    private final String filterMethod;
 
     public WrapperObserver(Observer<T> observer) {
         this.observer = observer;
+        this.filterClass = null;
+        this.filterMethod = null;
+    }
+
+    public WrapperObserver(Observer<T> observer, String filterClass, String filterMethod) {
+        this.observer = observer;
+        this.filterClass = filterClass;
+        this.filterMethod = filterMethod;
     }
 
     /**
@@ -58,11 +68,22 @@ public class WrapperObserver<T> implements Observer<T> {
         //返回一个表示堆栈转储的堆栈跟踪元素数组
         try {
             StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-            if (stackTrace != null && stackTrace.length > 0) {
-                for (StackTraceElement element : stackTrace) {
-                    if ("android.arch.lifecycle.LiveData".equals(element.getClassName()) &&
-                            "observeForever".equals(element.getMethodName())) {
-                        return true;
+            if (filterClass==null || filterMethod==null){
+                if (stackTrace != null && stackTrace.length > 0) {
+                    for (StackTraceElement element : stackTrace) {
+                        if ("android.arch.lifecycle.LiveData".equals(element.getClassName()) &&
+                                "observeForever".equals(element.getMethodName())) {
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                if (stackTrace != null && stackTrace.length > 0) {
+                    for (StackTraceElement element : stackTrace) {
+                        if (filterClass.equals(element.getClassName()) &&
+                                filterMethod.equals(element.getMethodName())) {
+                            return true;
+                        }
                     }
                 }
             }

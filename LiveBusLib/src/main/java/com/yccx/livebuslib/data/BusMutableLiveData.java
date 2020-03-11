@@ -147,6 +147,8 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
         //下面操作可以修复订阅者会收到订阅之前发布的消息的问题
         //获取LifecycleOwner的当前状态
         setHook(owner,observer);
+
+        //super.observe(owner, createStateObserver(observer));
     }
 
     /**
@@ -159,7 +161,7 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
     @Override
     public void observeForever(@NonNull Observer<T> observer) {
         if (!observerMap.containsKey(observer)) {
-            observerMap.put(observer, new WrapperObserver(observer));
+            observerMap.put(observer, createForeverObserver(observer));
         }
         super.observeForever(observerMap.get(observer));
     }
@@ -218,6 +220,16 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
             LiveDataBus.get().getBus().remove(mKey);
         }*/
     }
+
+
+    public static <T> WrapperObserver createForeverObserver(Observer<T> observer) {
+        return new WrapperObserver(observer, "android.arch.lifecycle.LiveData", "observeForever");
+    }
+
+    public static <T> WrapperObserver createStateObserver(Observer<T> observer) {
+        return new WrapperObserver(observer, "android.arch.lifecycle.LiveData$LifecycleBoundObserver", "onStateChanged");
+    }
+
 
     private void setHook(LifecycleOwner owner, Observer<T> observer) {
         SafeCastObserver<T> safeCastObserver = new SafeCastObserver<>(observer);
