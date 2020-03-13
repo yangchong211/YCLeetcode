@@ -95,7 +95,7 @@
 #### 8.0 添加依赖库
 - 依赖代码如下所示
     ```
-    implementation 'cn.yc:LiveBusLib:1.0.2'
+    implementation 'cn.yc:LiveBusLib:1.0.3'
     ```
 
 
