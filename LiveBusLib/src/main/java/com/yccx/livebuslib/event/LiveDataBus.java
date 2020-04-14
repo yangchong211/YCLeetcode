@@ -16,7 +16,6 @@ limitations under the License.
 package com.yccx.livebuslib.event;
 
 
-import com.yccx.livebuslib.data.BusLiveData;
 import com.yccx.livebuslib.data.BusMutableLiveData;
 import com.yccx.livebuslib.utils.BusLibUtils;
 
