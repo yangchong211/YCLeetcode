@@ -37,10 +37,14 @@ public class BusLibUtils {
      * 判断是否是主线程
      * @return
      */
-    public boolean isMainThread() {
+    public static boolean isMainThread() {
         return Looper.getMainLooper().getThread() == Thread.currentThread();
     }
 
+    /**
+     * 空指针校验
+     * @param object                                object
+     */
     public static void checkNull(Object object){
         if (object == null){
             throw new NullPointerException("the live bus parameter must be non-null");

@@ -77,8 +77,12 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
      */
     @Override
     public void setValue(T value) {
-        //调用父类即可
-        super.setValue(value);
+        if (BusLibUtils.isMainThread()){
+            //调用父类即可
+            super.setValue(value);
+        } else {
+            throw new IllegalStateException("You can only operate on the main thread");
+        }
     }
 
     /**
@@ -163,7 +167,8 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
         if (!observerMap.containsKey(observer)) {
             observerMap.put(observer, createForeverObserver(observer));
         }
-        super.observeForever(observerMap.get(observer));
+        Observer mObserver = observerMap.get(observer);
+        super.observeForever(mObserver);
     }
 
     /**
@@ -178,7 +183,9 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
         } else {
             realObserver = observer;
         }
-        super.removeObserver(realObserver);
+        if (realObserver != null) {
+            super.removeObserver(realObserver);
+        }
         if (!hasObservers() && LiveDataBus.get().getBus()!=null) {
             // 当对应liveData没有相关的观察者的时候
             // 就可以移除掉维护的LiveData
