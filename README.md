@@ -56,8 +56,8 @@
     | 事件总线 | 发送粘性事件 | 是否有序接收消息 | 延迟发送 | 组建生命周期感知 | 跨线程发事件 |
     | :------ | :--------- | :------------- | :------ | :-------------- | :-------- | 
     | LiveDataBus | true  | true         | true         |true         |false         |
-    | EventBus | true     | true          | false       |false        |true         |
-    | RxBus | true        | false       | false         |false        |true         |
+    | EventBus | true     | true          | false       |false        |false         |
+    | RxBus | true        | false       | false         |false        |false         |
 - EventBus 是业界知名的通信类总线库，存在许多被人诟病的缺点：
     - 需要手动的注册和反注册，稍不小心可能会造成内存泄露。
     - 使用 EventBus 出错时难以跟踪出错的事件源。

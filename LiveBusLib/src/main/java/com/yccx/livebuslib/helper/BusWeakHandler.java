@@ -163,7 +163,11 @@ public class BusWeakHandler {
         return hardRef.wrapper;
     }
 
+    /**
+     * 采用弱引用的方式避免handler内存泄漏
+     */
     private static class ExecHandler extends Handler {
+
         private final WeakReference<Callback> mCallback;
 
         ExecHandler() {
