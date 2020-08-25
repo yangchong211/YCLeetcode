@@ -64,7 +64,9 @@ public class BusLiveData<T> extends ExternalLiveData<T> implements BusObservable
 
         @Override
         public void run() {
-            setValue(newValue);
+            if (newValue!=null){
+                setValue(newValue);
+            }
         }
     }
 

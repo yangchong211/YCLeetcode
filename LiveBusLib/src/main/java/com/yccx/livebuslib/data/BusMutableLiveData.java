@@ -77,6 +77,7 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
      */
     @Override
     public void setValue(T value) {
+        BusLibUtils.checkNull(value);
         if (BusLibUtils.isMainThread()){
             //调用父类即可
             super.setValue(value);
@@ -91,6 +92,7 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
      */
     @Override
     public void postValue(T value) {
+        BusLibUtils.checkNull(value);
         //注意，去掉super方法，
         //super.postValue(value);
         mainHandler.post(new PostValueTask(value));
@@ -103,6 +105,7 @@ public class BusMutableLiveData<T> extends MutableLiveData<T> implements BusObse
      */
     @Override
     public void postValueDelay(T value, long delay) {
+        BusLibUtils.checkNull(value);
         mainHandler.postDelayed(new PostValueTask(value) , delay);
         //mainHandler.postAtTime(new PostValueTask(value) , delay);
     }

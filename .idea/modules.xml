@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Demo/Demo.iml" filepath="$PROJECT_DIR$/.idea/modules/Demo/Demo.iml" group="YCLiveDataBus/Demo" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GitHub-YCLiveDataBus.iml" filepath="$PROJECT_DIR$/.idea/modules/GitHub-YCLiveDataBus.iml" group="YCLiveDataBus" />
       <module fileurl="file://$PROJECT_DIR$/LiveBusLib/LiveBusLib.iml" filepath="$PROJECT_DIR$/LiveBusLib/LiveBusLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/YCLiveDataBus.iml" filepath="$PROJECT_DIR$/YCLiveDataBus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/YCLiveDataBus-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/YCLiveDataBus-app.iml" group="YCLiveDataBus/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LiveBusLib/cn.yc-LiveBusLib.iml" filepath="$PROJECT_DIR$/.idea/modules/LiveBusLib/cn.yc-LiveBusLib.iml" group="YCLiveDataBus/LiveBusLib" />
     </modules>
   </component>
 </project>

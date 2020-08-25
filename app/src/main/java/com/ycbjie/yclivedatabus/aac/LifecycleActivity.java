@@ -1,22 +1,28 @@
-package com.ycbjie.yclivedatabus.lifecycle;
+package com.ycbjie.yclivedatabus.aac;
 
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.ycbjie.yclivedatabus.R;
 import com.yccx.livebuslib.utils.BusLogUtils;
 
-public class FourActivity extends AppCompatActivity {
+public class LifecycleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_lifecycle);
+        initView();
         BusLogUtils.d("------AppCompatActivity onCreate() called");
         testLifecycle();
+    }
+
+    private void initView() {
+
     }
 
     @Override

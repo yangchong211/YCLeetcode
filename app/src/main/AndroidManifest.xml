@@ -36,7 +36,10 @@
         <activity android:name=".livebus.StickyLiveActivity"/>
         <activity android:name=".livebus.SendLiveBusActivity"/>
 
-        <activity android:name=".lifecycle.FourActivity"/>
+        <activity android:name=".aac.AacActivity"/>
+        <activity android:name=".aac.LifecycleActivity"/>
+        <activity android:name=".aac.ViewModelActivity"/>
+        <activity android:name=".aac.LiveDataActivity"/>
     </application>
 
 </manifest>

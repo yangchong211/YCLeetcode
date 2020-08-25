@@ -5,7 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.ycbjie.yclivedatabus.lifecycle.FourActivity;
+import com.ycbjie.yclivedatabus.aac.AacActivity;
+import com.ycbjie.yclivedatabus.aac.LifecycleActivity;
 import com.ycbjie.yclivedatabus.rxbus.FirstActivity;
 import com.ycbjie.yclivedatabus.eventbus.SecondActivity;
 import com.ycbjie.yclivedatabus.livebus.ThirdActivity;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, ThirdActivity.class));
                 break;
             case R.id.tv_4:
-                startActivity(new Intent(this, FourActivity.class));
+                startActivity(new Intent(this, AacActivity.class));
                 break;
             default:
                 break;

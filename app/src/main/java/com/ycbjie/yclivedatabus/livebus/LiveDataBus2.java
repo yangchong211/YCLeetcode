@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public final class LiveDataBus2 {
 
     private final Map<String, BusMutableLiveData<Object>> bus;

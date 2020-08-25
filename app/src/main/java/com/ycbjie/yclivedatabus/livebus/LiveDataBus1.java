@@ -15,6 +15,7 @@ import java.util.Map;
  *     revise:
  * </pre>
  */
+@Deprecated
 public final class LiveDataBus1 {
 
     private final Map<String, MutableLiveData<Object>> bus;
