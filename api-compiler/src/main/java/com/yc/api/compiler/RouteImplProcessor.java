@@ -6,7 +6,7 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
-import com.yc.api.ApiConstants;
+import com.yc.api.RouteConstants;
 import com.yc.api.RouteImpl;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ import javax.lang.model.util.SimpleAnnotationValueVisitor8;
 
 @AutoService(Processor.class)
 @SupportedAnnotationTypes("com.yc.api.RouteImpl")
-public class ApiImplProcessor extends AbstractProcessor {
+public class RouteImplProcessor extends AbstractProcessor {
 
     private Filer filer;       // File util, write class file into disk.
     private Elements elements;
@@ -64,7 +64,7 @@ public class ApiImplProcessor extends AbstractProcessor {
                 }
                 ApiContract<ClassName> apiNameContract = getApiClassNameContract((TypeElement) apiImplElement);
                 try {
-                    JavaFile.builder(ApiConstants.PACKAGE_NAME_CONTRACT, buildClass(apiNameContract))
+                    JavaFile.builder(RouteConstants.PACKAGE_NAME_CONTRACT, buildClass(apiNameContract))
                             .build()
                             .writeTo(filer);
                 } catch (IOException e) {
@@ -94,9 +94,9 @@ public class ApiImplProcessor extends AbstractProcessor {
 
     private TypeSpec buildClass(ApiContract<ClassName> apiNameContract) {
         String simpleName = apiNameContract.getApi().simpleName();
-        TypeElement typeElement = elements.getTypeElement(ApiConstants.INTERFACE_NAME_CONTRACT);
+        TypeElement typeElement = elements.getTypeElement(RouteConstants.INTERFACE_NAME_CONTRACT);
         ClassName className = ClassName.get(typeElement);
-        return TypeSpec.classBuilder(simpleName + ApiConstants.SEPARATOR + ApiConstants.CONTRACT)
+        return TypeSpec.classBuilder(simpleName + RouteConstants.SEPARATOR + RouteConstants.CONTRACT)
                 .addSuperinterface(className)
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(buildMethod(apiNameContract))
@@ -106,20 +106,20 @@ public class ApiImplProcessor extends AbstractProcessor {
     private MethodSpec buildMethod(ApiContract<ClassName> apiNameContract) {
         ClassName api = apiNameContract.getApi();
         ClassName apiImpl = apiNameContract.getApiImpl();
-        return MethodSpec.methodBuilder(ApiConstants.METHOD_NAME_REGISTER)
+        return MethodSpec.methodBuilder(RouteConstants.METHOD_NAME_REGISTER)
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(buildParameterSpec())
-                .addStatement(ApiConstants.INSTANCE_NAME_REGISTER + "." +
-                        ApiConstants.METHOD_NAME_REGISTER + "($T.class, $T.class)", api,apiImpl )
+                .addStatement(RouteConstants.INSTANCE_NAME_REGISTER + "." +
+                        RouteConstants.METHOD_NAME_REGISTER + "($T.class, $T.class)", api,apiImpl )
                 .build();
     }
 
     private ParameterSpec buildParameterSpec() {
-        TypeElement typeElement = elements.getTypeElement(ApiConstants.INTERFACE_TYPE_REGISTER);
+        TypeElement typeElement = elements.getTypeElement(RouteConstants.INTERFACE_TYPE_REGISTER);
         ClassName className = ClassName.get(typeElement);
         return ParameterSpec
-                .builder(className, ApiConstants.INSTANCE_NAME_REGISTER)
+                .builder(className, RouteConstants.INSTANCE_NAME_REGISTER)
                 .build();
     }
 

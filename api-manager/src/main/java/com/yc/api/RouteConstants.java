@@ -1,6 +1,6 @@
 package com.yc.api;
 
-public class ApiConstants {
+public class RouteConstants {
     public static final String SEPARATOR = "$$";
     public static final String CONTRACT = "Contract";
     public static final String INTERFACE_TYPE_REGISTER = "com.yc.api.IRegister";

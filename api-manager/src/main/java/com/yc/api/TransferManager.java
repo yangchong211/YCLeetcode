@@ -46,8 +46,8 @@ public class TransferManager implements IRegister {
         if (implementClass == null) {
             try {
                 String simpleName = tClass.getSimpleName();
-                String name = ApiConstants.PACKAGE_NAME_CONTRACT + "." + simpleName +
-                        ApiConstants.SEPARATOR + ApiConstants.CONTRACT;
+                String name = RouteConstants.PACKAGE_NAME_CONTRACT + "." + simpleName +
+                        RouteConstants.SEPARATOR + RouteConstants.CONTRACT;
                 Class<?> aClass = Class.forName(name);
                 Constructor<?> constructor = aClass.getConstructor();
                 Object newInstance = constructor.newInstance();
@@ -77,8 +77,8 @@ public class TransferManager implements IRegister {
                 if (method.getReturnType() == void.class) {
                     return null;
                 }
-                throw new IllegalStateException("Empty object cannot invoke a method which is not" +
-                        " returning void or its name is not isPresent. Please use isPresent() at first.");
+                throw new IllegalStateException("空对象不能调用非空对象的方法" +
+                        " 返回void或它的名字不是isPresent。请先用isPresent()");
             }
         };
         Object proxyInstance = Proxy.newProxyInstance(classLoader, new Class[]{tClass}, invocationHandler);
