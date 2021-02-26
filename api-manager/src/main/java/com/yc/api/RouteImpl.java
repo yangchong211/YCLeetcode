@@ -1,5 +1,5 @@
 package com.yc.api;
 
-public @interface ApiImpl {
+public @interface RouteImpl {
     Class value();
 }

@@ -7,7 +7,7 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApiManager implements IRegister {
+public class TransferManager implements IRegister {
 
 
     /**
@@ -15,17 +15,17 @@ public class ApiManager implements IRegister {
      */
 
     private static final String TAG = "ApiManager";
-    private volatile static ApiManager instance;
+    private volatile static TransferManager instance;
     private Map<Class, Class> apiImplementMap = new HashMap<>();
 
-    private ApiManager() {
+    private TransferManager() {
     }
 
-    public static ApiManager getInstance() {
+    public static TransferManager getInstance() {
         if (instance == null) {
-            synchronized (ApiManager.class) {
+            synchronized (TransferManager.class) {
                 if (instance == null) {
-                    instance = new ApiManager();
+                    instance = new TransferManager();
                 }
             }
         }
@@ -33,7 +33,7 @@ public class ApiManager implements IRegister {
     }
 
     @Override
-    public <I extends IApi, E extends I> void register(Class<I> apiInterface, Class<E> apiImplement) {
+    public <I extends IRoute, E extends I> void register(Class<I> apiInterface, Class<E> apiImplement) {
         apiImplementMap.put(apiInterface, apiImplement);
     }
 
@@ -41,7 +41,7 @@ public class ApiManager implements IRegister {
         apiImplementMap.clear();
     }
 
-    public <T extends IApi> T getApi(Class<T> tClass) {
+    public <T extends IRoute> T getApi(Class<T> tClass) {
         Class<? extends T> implementClass = apiImplementMap.get(tClass);
         if (implementClass == null) {
             try {
@@ -51,7 +51,7 @@ public class ApiManager implements IRegister {
                 Class<?> aClass = Class.forName(name);
                 Constructor<?> constructor = aClass.getConstructor();
                 Object newInstance = constructor.newInstance();
-                ((IApiContract) newInstance).register(this);
+                ((IRouteContract) newInstance).register(this);
                 implementClass = apiImplementMap.get(tClass);
             } catch (Exception e) {
                 e.printStackTrace();

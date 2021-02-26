@@ -1,6 +1,6 @@
 package com.yc.api;
 
-public interface IApi {
+public interface IRoute {
 
     default boolean isPresent() {
         return true;

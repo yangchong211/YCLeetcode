@@ -7,7 +7,7 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 import com.yc.api.ApiConstants;
-import com.yc.api.ApiImpl;
+import com.yc.api.RouteImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,7 +31,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.SimpleAnnotationValueVisitor8;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.yc.api.ApiImpl")
+@SupportedAnnotationTypes("com.yc.api.RouteImpl")
 public class ApiImplProcessor extends AbstractProcessor {
 
     private Filer filer;       // File util, write class file into disk.
@@ -58,7 +58,7 @@ public class ApiImplProcessor extends AbstractProcessor {
         for (TypeElement typeElement : set) {
             Set<? extends Element> annotated = roundEnvironment.getElementsAnnotatedWith(typeElement);
             for (Element apiImplElement : annotated) {
-                ApiImpl annotation = apiImplElement.getAnnotation(ApiImpl.class);
+                RouteImpl annotation = apiImplElement.getAnnotation(RouteImpl.class);
                 if (annotation == null || !(apiImplElement instanceof TypeElement)) {
                     continue;
                 }

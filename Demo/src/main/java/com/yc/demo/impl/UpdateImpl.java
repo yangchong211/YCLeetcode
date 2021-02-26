@@ -1,13 +1,13 @@
 package com.yc.demo.impl;
 
 
-import com.yc.api.ApiImpl;
+import com.yc.api.RouteImpl;
 import com.zwwl.moduleinterface.IUpdateManager;
 
 import java.util.Random;
 
 
-@ApiImpl(IUpdateManager.class)
+@RouteImpl(IUpdateManager.class)
 public class UpdateImpl implements IUpdateManager {
 
 

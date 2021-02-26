@@ -1,14 +1,13 @@
 package com.yc.demo.impl;
 
 
-import com.yc.api.ApiImpl;
+import com.yc.api.RouteImpl;
 import com.zwwl.moduleinterface.IAddressManager;
-import com.zwwl.moduleinterface.IUpdateManager;
 
 import java.util.Random;
 
 
-@ApiImpl(IAddressManager.class)
+@RouteImpl(IAddressManager.class)
 public class AddressImpl implements IAddressManager {
 
     @Override

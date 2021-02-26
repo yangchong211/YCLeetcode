@@ -6,9 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.yc.api.ApiManager;
+import com.yc.api.TransferManager;
 import com.zwwl.moduleinterface.IAddressManager;
-import com.zwwl.moduleinterface.IUpdateManager;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -29,7 +28,7 @@ public class ModuleCActivity extends AppCompatActivity implements View.OnClickLi
 
         mTv1.setOnClickListener(this);
 
-        iAddressManager = ApiManager.getInstance().getApi(IAddressManager.class);
+        iAddressManager = TransferManager.getInstance().getApi(IAddressManager.class);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.zwwl.moduleinterface;
 
-import com.yc.api.IApi;
+import com.yc.api.IRoute;
 
-public interface IAddressManager extends IApi {
+public interface IAddressManager extends IRoute {
 
     void getAddressInfo(CallBack callBack);
 

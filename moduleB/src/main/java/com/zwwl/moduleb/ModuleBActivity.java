@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.yc.api.ApiManager;
+import com.yc.api.TransferManager;
 import com.zwwl.moduleinterface.IUpdateManager;
-import com.zwwl.moduleinterface.IUserManager;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -30,7 +28,7 @@ public class ModuleBActivity extends AppCompatActivity implements View.OnClickLi
 
         mTv1.setOnClickListener(this);
 
-        iUpdateManager = ApiManager.getInstance().getApi(IUpdateManager.class);
+        iUpdateManager = TransferManager.getInstance().getApi(IUpdateManager.class);
     }
 
     @SuppressLint("SetTextI18n")

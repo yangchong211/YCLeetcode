@@ -6,10 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.yc.api.ApiManager;
+import com.yc.api.TransferManager;
 import com.zwwl.moduleinterface.IUserManager;
 
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ModuleAActivity extends AppCompatActivity implements View.OnClickListener {
@@ -33,7 +32,7 @@ public class ModuleAActivity extends AppCompatActivity implements View.OnClickLi
         mTv2.setOnClickListener(this);
 
 
-        userApi = ApiManager.getInstance().getApi(IUserManager.class);
+        userApi = TransferManager.getInstance().getApi(IUserManager.class);
     }
 
     @SuppressLint("SetTextI18n")

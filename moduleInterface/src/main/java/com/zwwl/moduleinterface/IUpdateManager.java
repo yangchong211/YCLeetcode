@@ -1,8 +1,8 @@
 package com.zwwl.moduleinterface;
 
-import com.yc.api.IApi;
+import com.yc.api.IRoute;
 
-public interface IUpdateManager extends IApi {
+public interface IUpdateManager extends IRoute {
 
     /**
      * 检测升级

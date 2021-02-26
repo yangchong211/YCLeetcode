@@ -1,5 +1,5 @@
 package com.yc.api;
 
-public interface IApiContract {
+public interface IRouteContract {
     void register(IRegister register);
 }

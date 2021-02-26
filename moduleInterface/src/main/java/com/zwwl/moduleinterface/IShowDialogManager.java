@@ -1,8 +1,8 @@
 package com.zwwl.moduleinterface;
 
-import com.yc.api.IApi;
+import com.yc.api.IRoute;
 
-public interface IShowDialogManager extends IApi {
+public interface IShowDialogManager extends IRoute {
 
     void showDialog(CallBack callBack);
 
