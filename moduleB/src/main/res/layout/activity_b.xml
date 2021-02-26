@@ -7,35 +7,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".MainActivity">
+    tools:context=".ModuleBActivity">
 
     <TextView
-        android:id="@+id/tv_3"
+        android:id="@+id/tv_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:background="@color/colorAccent"
         android:layout_marginTop="10dp"
-        android:text="3.跳转A模块"/>
+        android:text="1.获取版本更新"/>
 
 
     <TextView
-        android:id="@+id/tv_4"
+        android:id="@+id/tv_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:background="@color/colorAccent"
         android:layout_marginTop="10dp"
-        android:text="4.跳转B模块"/>
-
-
-    <TextView
-        android:id="@+id/tv_5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@color/colorAccent"
-        android:layout_marginTop="10dp"
-        android:text="5.跳转C模块"/>
+        android:text="2.版本更新状态"/>
 
 </LinearLayout>

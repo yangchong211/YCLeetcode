@@ -4,11 +4,18 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Demo/Demo.iml" filepath="$PROJECT_DIR$/.idea/modules/Demo/Demo.iml" group="YCLiveDataBus/Demo" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/GitHub-YCLiveDataBus.iml" filepath="$PROJECT_DIR$/.idea/modules/GitHub-YCLiveDataBus.iml" group="YCLiveDataBus" />
-      <module fileurl="file://$PROJECT_DIR$/LiveBusLib/LiveBusLib.iml" filepath="$PROJECT_DIR$/LiveBusLib/LiveBusLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LiveDataBusLib/LiveBusLib.iml" filepath="$PROJECT_DIR$/LiveDataBusLib/LiveBusLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LiveBusLib/LiveDataBusLib.iml" filepath="$PROJECT_DIR$/.idea/modules/LiveBusLib/LiveDataBusLib.iml" group="YCLiveDataBus/LiveDataBusLib" />
       <module fileurl="file://$PROJECT_DIR$/YCLiveDataBus.iml" filepath="$PROJECT_DIR$/YCLiveDataBus.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/YCLiveDataBus-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/YCLiveDataBus-app.iml" group="YCLiveDataBus/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-compiler/api-compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/api-compiler/api-compiler.iml" group="YCLiveDataBus/api-compiler" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-manager/api-manager.iml" filepath="$PROJECT_DIR$/.idea/modules/api-manager/api-manager.iml" group="YCLiveDataBus/api-manager" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/LiveBusLib/cn.yc-LiveBusLib.iml" filepath="$PROJECT_DIR$/.idea/modules/LiveBusLib/cn.yc-LiveBusLib.iml" group="YCLiveDataBus/LiveBusLib" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/moduleA/moduleA.iml" filepath="$PROJECT_DIR$/.idea/modules/moduleA/moduleA.iml" group="YCLiveDataBus/moduleA" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/moduleB/moduleB.iml" filepath="$PROJECT_DIR$/.idea/modules/moduleB/moduleB.iml" group="YCLiveDataBus/moduleB" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/moduleC/moduleC.iml" filepath="$PROJECT_DIR$/.idea/modules/moduleC/moduleC.iml" group="YCLiveDataBus/moduleC" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/moduleInterface/moduleInterface.iml" filepath="$PROJECT_DIR$/.idea/modules/moduleInterface/moduleInterface.iml" group="YCLiveDataBus/moduleInterface" />
     </modules>
   </component>
 </project>
