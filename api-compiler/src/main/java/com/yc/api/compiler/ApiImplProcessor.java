@@ -8,6 +8,7 @@ import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 import com.yc.api.ApiConstants;
 import com.yc.api.ApiImpl;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,10 @@ public class ApiImplProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
+        /*
+         * 1. set：携带getSupportedAnnotationTypes()中的注解类型，一般不需要用到。
+         * 2. roundEnvironment：processor将扫描到的信息存储到roundEnvironment中，从这里取出所有使用注解的字段。
+         */
         if (set==null || set.size()==0){
             return false;
         }
@@ -75,35 +80,46 @@ public class ApiImplProcessor extends AbstractProcessor {
         List<? extends AnnotationMirror> annotationMirrors = apiImplElement.getAnnotationMirrors();
         for (AnnotationMirror annotationMirror : annotationMirrors) {
             Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues();
-            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : elementValues.entrySet()) {
-                apiClassSymbol = entry.getValue().accept(annotationValueVisitor, null);
+            Set<? extends Map.Entry<? extends ExecutableElement, ? extends AnnotationValue>> entries = elementValues.entrySet();
+            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : entries) {
+                AnnotationValue value = entry.getValue();
+                apiClassSymbol = value.accept(annotationValueVisitor, null);
             }
         }
-        ClassName apiName = ClassName.get(elements.getTypeElement(apiClassSymbol));
+        TypeElement typeElement = elements.getTypeElement(apiClassSymbol);
+        ClassName apiName = ClassName.get(typeElement);
         ClassName apiImplName = ClassName.get(apiImplElement);
         return new ApiContract<>(apiName, apiImplName);
     }
 
     private TypeSpec buildClass(ApiContract<ClassName> apiNameContract) {
-        return TypeSpec.classBuilder(apiNameContract.getApi().simpleName() + ApiConstants.SEPARATOR + ApiConstants.CONTRACT)
-                .addSuperinterface(ClassName.get(elements.getTypeElement(ApiConstants.INTERFACE_NAME_CONTRACT)))
+        String simpleName = apiNameContract.getApi().simpleName();
+        TypeElement typeElement = elements.getTypeElement(ApiConstants.INTERFACE_NAME_CONTRACT);
+        ClassName className = ClassName.get(typeElement);
+        return TypeSpec.classBuilder(simpleName + ApiConstants.SEPARATOR + ApiConstants.CONTRACT)
+                .addSuperinterface(className)
                 .addModifiers(Modifier.PUBLIC)
                 .addMethod(buildMethod(apiNameContract))
                 .build();
     }
 
     private MethodSpec buildMethod(ApiContract<ClassName> apiNameContract) {
+        ClassName api = apiNameContract.getApi();
+        ClassName apiImpl = apiNameContract.getApiImpl();
         return MethodSpec.methodBuilder(ApiConstants.METHOD_NAME_REGISTER)
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(buildParameterSpec())
-                .addStatement(ApiConstants.INSTANCE_NAME_REGISTER + "." + ApiConstants.METHOD_NAME_REGISTER + "($T.class, $T.class)", apiNameContract.getApi(), apiNameContract.getApiImpl())
+                .addStatement(ApiConstants.INSTANCE_NAME_REGISTER + "." +
+                        ApiConstants.METHOD_NAME_REGISTER + "($T.class, $T.class)", api,apiImpl )
                 .build();
     }
 
     private ParameterSpec buildParameterSpec() {
+        TypeElement typeElement = elements.getTypeElement(ApiConstants.INTERFACE_TYPE_REGISTER);
+        ClassName className = ClassName.get(typeElement);
         return ParameterSpec
-                .builder(ClassName.get(elements.getTypeElement(ApiConstants.INTERFACE_TYPE_REGISTER)), ApiConstants.INSTANCE_NAME_REGISTER)
+                .builder(className, ApiConstants.INSTANCE_NAME_REGISTER)
                 .build();
     }
 
