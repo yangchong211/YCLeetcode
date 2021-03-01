@@ -1,5 +1,14 @@
 package com.yc.api;
 
+/**
+ * <pre>
+ *     @author 杨充
+ *     blog  : https://github.com/yangchong211
+ *     time  : 2019/12/23
+ *     desc  : 常量
+ *     revise:
+ * </pre>
+ */
 public class RouteConstants {
     public static final String SEPARATOR = "$$";
     public static final String CONTRACT = "Contract";

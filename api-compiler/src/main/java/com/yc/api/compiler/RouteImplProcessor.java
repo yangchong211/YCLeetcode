@@ -62,7 +62,7 @@ public class RouteImplProcessor extends AbstractProcessor {
                 if (annotation == null || !(apiImplElement instanceof TypeElement)) {
                     continue;
                 }
-                ApiContract<ClassName> apiNameContract = getApiClassNameContract((TypeElement) apiImplElement);
+                RouteContract<ClassName> apiNameContract = getApiClassNameContract((TypeElement) apiImplElement);
                 try {
                     JavaFile.builder(RouteConstants.PACKAGE_NAME_CONTRACT, buildClass(apiNameContract))
                             .build()
@@ -75,7 +75,7 @@ public class RouteImplProcessor extends AbstractProcessor {
         return true;
     }
 
-    private ApiContract<ClassName> getApiClassNameContract(TypeElement apiImplElement) {
+    private RouteContract<ClassName> getApiClassNameContract(TypeElement apiImplElement) {
         String apiClassSymbol = null;
         List<? extends AnnotationMirror> annotationMirrors = apiImplElement.getAnnotationMirrors();
         for (AnnotationMirror annotationMirror : annotationMirrors) {
@@ -89,10 +89,10 @@ public class RouteImplProcessor extends AbstractProcessor {
         TypeElement typeElement = elements.getTypeElement(apiClassSymbol);
         ClassName apiName = ClassName.get(typeElement);
         ClassName apiImplName = ClassName.get(apiImplElement);
-        return new ApiContract<>(apiName, apiImplName);
+        return new RouteContract<>(apiName, apiImplName);
     }
 
-    private TypeSpec buildClass(ApiContract<ClassName> apiNameContract) {
+    private TypeSpec buildClass(RouteContract<ClassName> apiNameContract) {
         String simpleName = apiNameContract.getApi().simpleName();
         TypeElement typeElement = elements.getTypeElement(RouteConstants.INTERFACE_NAME_CONTRACT);
         ClassName className = ClassName.get(typeElement);
@@ -103,7 +103,7 @@ public class RouteImplProcessor extends AbstractProcessor {
                 .build();
     }
 
-    private MethodSpec buildMethod(ApiContract<ClassName> apiNameContract) {
+    private MethodSpec buildMethod(RouteContract<ClassName> apiNameContract) {
         ClassName api = apiNameContract.getApi();
         ClassName apiImpl = apiNameContract.getApiImpl();
         return MethodSpec.methodBuilder(RouteConstants.METHOD_NAME_REGISTER)

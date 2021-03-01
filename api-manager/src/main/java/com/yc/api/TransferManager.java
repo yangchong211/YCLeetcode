@@ -7,18 +7,22 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * <pre>
+ *     @author 杨充
+ *     blog  : https://github.com/yangchong211
+ *     time  : 2019/12/23
+ *     desc  : 接口管理者
+ *     revise:
+ * </pre>
+ */
 public class TransferManager implements IRegister {
 
-
-    /**
-     * https://github.com/MoerFinance/ApiManager
-     */
-
-    private static final String TAG = "ApiManager";
     private volatile static TransferManager instance;
     private Map<Class, Class> apiImplementMap = new HashMap<>();
 
     private TransferManager() {
+
     }
 
     public static TransferManager getInstance() {
