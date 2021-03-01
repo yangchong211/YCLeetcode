@@ -1,57 +1,24 @@
-# liveData实现事件总线
+# 组件化项目通信库
 ## 目录介绍
-- 01.先提出问题思考
-- 02.该liveDataBus优势
-- 03.EventBus使用原理
-- 04.RxBus使用原理
-- 05.三者之间优缺点对比
-- 06.LiveDataBus的组成
-- 07.LiveDataBus原理图
-- 08.该库使用api方法
-- 09.事件消息系列博客
-- 10.遇到问题思考汇总
-
-
-### 00.该库的功能
-- 该库代码量少，利用LiveData实现事件总线，替代EventBus。充分利用了生命周期感知功能，可以在activities, fragments, 或者 services生命周期是活跃状态时更新这些组件。支持发送普通事件，也可以发送粘性事件；还可以发送延迟消息，以及轮训延迟消息等等。
+- 00.组件化项目通信库
+- 01.组件事件通知库
+- 02.组件之间的通信库
+- 03.一些问题反馈记录
+- 04.该库对应知识点
+- 05.其他封装库介绍
 
 
 
-### 01.先提出问题思考
-- 能否利用LiveData的特有功能实现类似EventBus事件总线的功能？
-- 针对EventBus，RxBus，为何要弄LiveDataBus，它具有那些优势？
-- 如何利用LiveData生命周期感知这个功能，在实现事件总线上注意那些问题？
-- 怎样实现粘性和非粘性的事件消息，能否弄个延迟发送事件的功能，以及轮训发送事件功能？
-- 事件总线如果在订阅或者发送中某个环节抛出异常，如何才能不影响后续的功能？
+### 00.组件化项目通信库
+- 组件事件通知
+    - 该库代码量少，利用LiveData实现事件总线，替代EventBus。充分利用了生命周期感知功能，可以在activities, fragments, 或者 services生命周期是活跃状态时更新这些组件。支持发送普通事件，也可以发送粘性事件；还可以发送延迟消息，以及轮训延迟消息等等。
+- 组件之间的通信
+    - 组件之间的通信，接口+实现类，使用注解生成代码方式，无需手动注册，将使用步骤简单化，支持组件间以暴露接口提供服务的方式进行通信。
 
 
 
-### 02.该liveDataBus优势
-- 1.该LiveDataBus的实现比较简单，支持发送普通事件，也支持发送粘性事件；
-- 2.该LiveDataBus支持发送延迟事件消息，也可以用作轮训延迟事件(比如商城类项目某活动页面5秒钟刷一次接口数据)，支持stop轮训操作
-- 3.该LiveDataBus可以减小APK包的大小，由于LiveDataBus只依赖Android官方Android Architecture Components组件的LiveData；
-- 4.该LiveDataBus具有生命周期感知，这个是一个很大的优势。不需要反注册，避免了内存泄漏等问题；
-
-
-
-### 03.EventBus使用原理
-- 框架的核心思想，就是消息的发布和订阅，使用订阅者模式实现，其原理图大概如下所示，摘自网络。
-    - ![image](https://img-blog.csdnimg.cn/20200305174827897.png)
-- 发布和订阅之间的依赖关系，其原理图大概如下所示，摘自网络。
-    - ![image](https://img-blog.csdnimg.cn/20200305174749401.png)
-- 订阅/发布模式和观察者模式之间有着微弱的区别，个人觉得订阅/发布模式是观察者模式的一种增强版。两者区别如下所示，摘自网络。
-    - ![image摘自网络](https://img-blog.csdnimg.cn/20200305174854437.png)
-
-
-### 04.RxBus使用原理
-- RxBus不是一个库，而是一个文件，实现只有短短30行代码。RxBus本身不需要过多分析，它的强大完全来自于它基于的RxJava技术。
-- 在RxJava中有个Subject类，它继承Observable类，同时实现了Observer接口，因此Subject可以同时担当订阅者和被订阅者的角色，我们使用Subject的子类PublishSubject来创建一个Subject对象（PublishSubject只有被订阅后才会把接收到的事件立刻发送给订阅者），在需要接收事件的地方，订阅该Subject对象，之后如果Subject对象接收到事件，则会发射给该订阅者，此时Subject对象充当被订阅者的角色。
-- 完成了订阅，在需要发送事件的地方将事件发送给之前被订阅的Subject对象，则此时Subject对象作为订阅者接收事件，然后会立刻将事件转发给订阅该Subject对象的订阅者，以便订阅者处理相应事件，到这里就完成了事件的发送与处理。
-- 最后就是取消订阅的操作了，RxJava中，订阅操作会返回一个Subscription对象，以便在合适的时机取消订阅，防止内存泄漏，如果一个类产生多个Subscription对象，我们可以用一个CompositeSubscription存储起来，以进行批量的取消订阅。
-
-
-
-### 05.三者之间优缺点对比
+### 01.组件事件通知库
+#### 1.1 组件事件通知对比
 - **对比结果如下所示**
     | 事件总线 | 发送粘性事件 | 是否有序接收消息 | 延迟发送 | 组建生命周期感知 | 跨线程发事件 |
     | :------ | :--------- | :------------- | :------ | :-------------- | :-------- | 
@@ -70,8 +37,7 @@
     - LiveData 为 Android 官方库，更加可靠。
 
 
-
-### 06.LiveDataBus的组成
+#### 1.2 LiveDataBus的组成
 - **消息**： 消息可以是任何的 Object，可以定义不同类型的消息，如 Boolean、String。也可以定义自定义类型的消息。
 - **消息通道**： LiveData 扮演了消息通道的角色，不同的消息通道用不同的名字区分，名字是 String 类型的，可以通过名字获取到一个 LiveData 消息通道。
 - **消息总线**： 消息总线通过单例实现，不同的消息通道存放在一个 HashMap 中。
@@ -80,26 +46,13 @@
 
 
 
-### 07.LiveDataBus原理图
-#### 7.1 订阅和注册的流程图
-- ![image](https://img-blog.csdnimg.cn/20200305173032750.jpg)
-
-
-#### 7.1 订阅注册原理图
-![image](https://img-blog.csdnimg.cn/2020030517313021.jpg)
-
-
-
-
-### 08.该库使用api方法
-#### 8.0 添加依赖库
+#### 1.3 如何使用事件通知api
 - 依赖代码如下所示
     ```
     implementation 'cn.yc:LiveBusLib:1.0.3'
     ```
 
-
-#### 8.1 最简单常见的发布/订阅事件消息
+##### 1.3.1 最简单常见的发布/订阅事件消息
 - 订阅事件，该种使用方式不需要取消订阅
     ```
     LiveDataBus.get()
@@ -119,7 +72,7 @@
     ```
 
 
-#### 8.2 Forever模式订阅和取消订阅消息【一直会收到通知】
+##### 1.3.2 Forever模式订阅和取消订阅消息【一直会收到通知】
 - 订阅事件，该种使用方式不需要取消订阅
     ```
     private Observer<String> observer = new Observer<String>() {
@@ -143,7 +96,7 @@
 
 
 
-#### 8.3 发送粘性事件消息
+##### 1.3.3 发送粘性事件消息
 - 订阅事件，该种使用方式不需要取消订阅
     ```
     LiveDataBus.get()
@@ -169,7 +122,7 @@
     ```
 
 
-#### 8.4 如何发送延迟消息
+##### 1.3.4 如何发送延迟消息
 - 该lib拥有延迟发送消息事件的功能，发送事件消息代码如下
     ```
     //延迟5秒发送事件消息
@@ -177,7 +130,7 @@
     ```
 
 
-#### 8.5 如何发送轮训延迟消息
+##### 1.3.5 如何发送轮训延迟消息
 - 这种场景主要应用在购物类的需求中，比如一个活动页面，每个5秒刷新一下接口数据更新页面活动
     ```
     //开始轮训
@@ -189,78 +142,134 @@
 
 
 
-### 09.事件消息系列博客
-- [01.EventBus](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/01.EventBus.md)
-    - 01.EventBus简单介绍
-    - 02.EventBus简单使用
-    - 03.EventBus优缺点
-    - 04.什么是发布/订阅模式
-    - 05.EventBus实现原理
-    - 06.EventBus重大问题
-- [02.RxBus](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/02.RxBus.md)
-    - 01.RxBus是什么
-    - 02.RxBus原理是什么
-    - 03.RxBus简单实现
-    - 04.RxBus优质库
-    - 05.简单使用代码案例
-- [03.LiveData简单介绍](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/03.LiveData简单介绍.md)
-    - 01.LiveData是什么东西
-    - 02.为何要使用LiveData
-    - 03.使用LiveData的优势
-    - 04.使用LiveData的步骤
-    - 05.简单使用LiveData
-    - 06.observe()和observerForever()
-    - 07.理解活跃状态更新数据
-    - 08.setValue和postValue
-- [04.LiveDataBus](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/04.LiveDataBus.md)
-    - 01.为何使用liveData
-    - 02.LiveDataBus的组成
-    - 03.LiveDataBus原理图
-    - 04.简单的实现案例代码
-    - 05.遇到的问题和分析思路
-    - 06.使用反射解决遇到问题
-    - 07.使用postValue的bug
-    - 08.如何发送延迟事件消息
-    - 09.如何发送轮训延迟事件
-- [05.EventBus源码分析](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/05.EventBus源码分析.md)
-    - 01.EventBus注册源码解析
-    - 02.EventBus事件分发解析
-    - 03.EventBus取消注册解析
-    - 04.总结一下EventBus的工作原理
-- [06.RxBus源码分析](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/06.RxBus源码分析.md)
-    - 01.后续更新
-- [07.LiveData源码分析](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/07.LiveData源码分析.md)
-    - 01.LiveData的原理介绍
-    - 02.然后思考一些问题
-    - 03.observe订阅源码分析
-    - 04.setValue发送源码分析
-    - 05.observeForever源码
-    - 06.LiveData源码总结
-- [08.Lifecycle源码分析](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/08.Lifecycle源码分析.md)
-    - 01.Lifecycle的作用是什么
-    - 02.Lifecycle的简单使用
-    - 03.Lifecycle的使用场景
-    - 04.如何实现生命周期感知
-    - 05.注解方法如何被调用
-- [09.观察者模式](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/09.观察者模式.md)
-- [10.事件总线封装库](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/10.事件总线封装库.md)
-- [11.问题思考大汇总](https://github.com/yangchong211/YCLiveDataBus/blob/master/read/11.问题思考大汇总.md)
+### 02.组件之间的通信库
+#### 2.1 老版组件通信实践
+- 比如业务组件划分
+    - 组件A，组件B，组件C，接口通信组件【被各个业务组件依赖】
+- 通信组件几个主要类
+    - BusinessTransfer，主要是map集合中get获取和put添加接口类的对象，利用反射机制创建实例对象。
+    - IUpdateManager，该类是版本更新接口类，定义更新抽象方法
+    - UpdateManagerImpl，该类是IUpdateManager接口实现类，主要是具体业务逻辑的实现
+- 主要实现的代码如下所示
+    ``` java
+    //接口
+    public interface IUpdateManager extends Serializable {
+  
+        void checkUpdate(UpdateManagerCallBack updateManagerCallBack);
+    
+        interface UpdateManagerCallBack {
+            void updateCallBack(boolean isNeedUpdate);
+        }
+    }
+    
+    //接口实现类
+    public class UpdateManagerImpl implements IUpdateManager {
+        @Override
+        public void checkUpdate(UpdateManagerCallBack updateManagerCallBack) {
+            try {
+                IConfigService configService = DsxxjServiceTransfer.$().getConfigureService();
+                String data = configService.getConfig(KEY_APP_UPDATE);
+                if (TextUtils.isEmpty(data)) {
+                    if (updateManagerCallBack != null) {
+                        updateManagerCallBack.updateCallBack(false);
+                    }
+                    return;
+                }
+                ForceUpdateEntity xPageUpdateEntity = JSON.parseObject(data, ForceUpdateEntity.class);
+                ForceUpdateManager.getInstance().checkForUpdate(xPageUpdateEntity, updateManagerCallBack);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    //如何使用
+    //在初始化时注入
+    BusinessTransfer businessTransfer = BusinessTransfer.$();
+    businessTransfer.setImpl(BusinessTransfer.BUSINESS_IMPL_UPDATE_MANAGER,
+            PACKAGE_NAME + ".base.businessimpl.UpdateManagerImpl");
+    
+    //版本更新
+    BusinessTransfer.$().getUpdate().checkUpdate(new IUpdateManager.UpdateManagerCallBack() {
+        @Override
+        public void updateCallBack(boolean isNeedUpdate) {
+            
+        }
+    });
+    ```
+- 这种方式存在几个问题
+    - 1.注入的时候要填写正确的包名，否则在运行期会出错，且不容易找到；
+    - 2.针对接口实现类，不能混淆，否则会导致反射找不到具体的类，因为是根据类的全路径反射创建对象；
+    - 3.每次添加新的接口通信，都需要手动去注入到map集合，稍微有点麻烦，能否改为自动注册呢？
+    - 4.每次还要在Transfer的类中，添加获取该接口对象的方法，能否自动一点？
+    - 5.可能出现空指针，一旦忘记没有注入或者反射创建对象失败，则直接导致崩溃……
 
 
 
-### 10.遇到问题思考汇总
+#### 2.2 封装库有何特点
+- 注解生成代码自动注册
+    - 使用apt注解在编译阶段生成服务接口与实现的映射注册帮助类，其实这部分就相当于是替代了之前在application初始化注入的步骤，获取服务时自动使用帮助类完成注册，不必手动调用注册方法。
+- 避免空指针崩溃
+    - 无服务实现注册时，使用空对象模式 + 动态代理的设计提前暴露调用错误，主要抛出异常，在测试时就发现问题，防止空指针异常。
+- 代码入侵性低
+    - 无需改动之前的代码，只需要在之前的接口和接口实现类按照约定添加注解规范即可。其接口+接口实现类还是用之前的，完全无影响……
+- 按照你需要来加载
+    - 首次获取接口服务的时候，用反射生成映射注册帮助类的实例，再返回实现的实例。
+- 丰富的代码案例
+    - 代码案例丰富，提供丰富的案例，然后多个业务场景，尽可能完善好demo。
 
 
-### 11.其他内容介绍
-#### 11.1 参考内容
-- https://github.com/bennidi/mbassador
-- https://github.com/zalando/nakadi
-- https://github.com/JeremyLiao/SmartEventBus
-- https://github.com/pwittchen/NetworkEvents
-- https://github.com/sunyatas/NetStatusBus
+#### 2.3 如何使用该库Api
+- 在module项目中添加依赖
+    ``` java
+    implementation project(path: ':module-manager')
+    annotationProcessor project(path: ':module-compiler')
+    ```
+- 在module通信组件中定义接口，注意需要继承IRouteApi接口
+    ``` java
+    public interface IUpdateManager extends IRouteApi {
+
+        void checkUpdate(UpdateManagerCallBack updateManagerCallBack);
+    
+        interface UpdateManagerCallBack {
+            void updateCallBack(boolean isNeedUpdate);
+        }
+    
+    }
+    ```
+- 在需要实现服务的组件中写接口实现类，注意需要添加注解
+    ``` java
+    @RouteImpl(IUpdateManager.class)
+    public class UpdateImpl implements IUpdateManager {
+        @Override
+        public void checkUpdate(UpdateManagerCallBack updateManagerCallBack) {
+            //省略
+        }
+    }
+    ```
+- 如何获取服务的实例对象
+    ``` java
+    //无返回值的案例
+    //设置监听
+    IUpdateManager iUpdateManager = TransferManager.getInstance().getApi(IUpdateManager.class);
+    iUpdateManager.checkUpdate(new IUpdateManager.UpdateManagerCallBack() {
+       @Override
+       public void updateCallBack(boolean isNeedUpdate) {
+           
+       }
+    });
+    
+    //有返回值的案例
+    userApi = TransferManager.getInstance().getApi(IUserManager.class);
+    String userInfo = userApi.getUserInfo();
+    ```
 
 
-#### 11.2 开源项目推荐
+
+
+
+
+### 05.其他封装库介绍
 - [1.开源博客汇总](https://github.com/yangchong211/YCBlogs)
 - [2.组件化实践项目](https://github.com/yangchong211/LifeHelper)
 - [3.视频播放器封装库](https://github.com/yangchong211/YCVideoPlayer)
@@ -284,15 +293,7 @@
 
 
 
-
-#### 11.3 其他推荐
-- 博客笔记大汇总【15年10月到至今】，包括Java基础及深入知识点，Android技术博客，Python学习笔记等等，还包括平时开发中遇到的bug汇总，当然也在工作之余收集了大量的面试题，长期更新维护并且修正，持续完善……开源的文件是markdown格式的！同时也开源了生活博客，从12年起，积累共计47篇[近100万字]，转载请注明出处，谢谢！
-- 链接地址：https://github.com/yangchong211/YCBlogs
-- 如果觉得好，可以star一下，谢谢！当然也欢迎提出建议，万事起于忽微，量变引起质变！
-
-
-
-#### 11.4 关于LICENSE
+### 06.关于LICENSE
 ```
 Copyright 2017 yangchong211（github.com/yangchong211）
 
