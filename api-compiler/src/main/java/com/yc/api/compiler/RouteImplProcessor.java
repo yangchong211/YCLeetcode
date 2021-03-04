@@ -10,8 +10,6 @@ import com.yc.api.RouteConstants;
 import com.yc.api.RouteImpl;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -20,15 +18,10 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
-import javax.lang.model.util.SimpleAnnotationValueVisitor8;
 
 @AutoService(Processor.class)
 @SupportedAnnotationTypes("com.yc.api.RouteImpl")
@@ -62,7 +55,8 @@ public class RouteImplProcessor extends AbstractProcessor {
                 if (annotation == null || !(apiImplElement instanceof TypeElement)) {
                     continue;
                 }
-                RouteContract<ClassName> apiNameContract = getApiClassNameContract((TypeElement) apiImplElement);
+                RouteContract<ClassName> apiNameContract = ElementTool.getApiClassNameContract(elements,
+                        annotationValueVisitor,(TypeElement) apiImplElement);
                 try {
                     JavaFile.builder(RouteConstants.PACKAGE_NAME_CONTRACT, buildClass(apiNameContract))
                             .build()
@@ -73,23 +67,6 @@ public class RouteImplProcessor extends AbstractProcessor {
             }
         }
         return true;
-    }
-
-    private RouteContract<ClassName> getApiClassNameContract(TypeElement apiImplElement) {
-        String apiClassSymbol = null;
-        List<? extends AnnotationMirror> annotationMirrors = apiImplElement.getAnnotationMirrors();
-        for (AnnotationMirror annotationMirror : annotationMirrors) {
-            Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues();
-            Set<? extends Map.Entry<? extends ExecutableElement, ? extends AnnotationValue>> entries = elementValues.entrySet();
-            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : entries) {
-                AnnotationValue value = entry.getValue();
-                apiClassSymbol = value.accept(annotationValueVisitor, null);
-            }
-        }
-        TypeElement typeElement = elements.getTypeElement(apiClassSymbol);
-        ClassName apiName = ClassName.get(typeElement);
-        ClassName apiImplName = ClassName.get(apiImplElement);
-        return new RouteContract<>(apiName, apiImplName);
     }
 
     private TypeSpec buildClass(RouteContract<ClassName> apiNameContract) {
@@ -123,10 +100,4 @@ public class RouteImplProcessor extends AbstractProcessor {
                 .build();
     }
 
-    public class MyAnAnnotationValueVisitor extends SimpleAnnotationValueVisitor8<String, Void> {
-        @Override
-        public String visitType(TypeMirror typeMirror, Void o) {
-            return typeMirror.toString();
-        }
-    }
 }

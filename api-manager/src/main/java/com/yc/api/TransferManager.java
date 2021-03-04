@@ -19,10 +19,14 @@ import java.util.Map;
 public class TransferManager implements IRegister {
 
     private volatile static TransferManager instance;
+    /**
+     * key表示的是自定义通信接口
+     * value表示自定义通信接口的实现类
+     */
     private Map<Class, Class> apiImplementMap = new HashMap<>();
 
     private TransferManager() {
-
+        //只允许自己内部构造
     }
 
     public static TransferManager getInstance() {

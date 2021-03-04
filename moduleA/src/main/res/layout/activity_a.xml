@@ -27,5 +27,13 @@
         android:layout_marginTop="10dp"
         android:text="2.去登陆"/>
 
+    <TextView
+        android:id="@+id/tv_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/colorAccent"
+        android:layout_marginTop="10dp"
+        android:text="3.A模块复用B模块中的弹窗功能"/>
 
 </LinearLayout>
