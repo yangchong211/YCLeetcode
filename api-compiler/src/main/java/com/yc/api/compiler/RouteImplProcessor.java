@@ -24,7 +24,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
 @AutoService(Processor.class)
-@SupportedAnnotationTypes("com.yc.api.RouteImpl")
+@SupportedAnnotationTypes(RouteConstants.INTERFACE_NAME_ROUTE_IMPL)
 public class RouteImplProcessor extends AbstractProcessor {
 
     private Filer filer;       // File util, write class file into disk.

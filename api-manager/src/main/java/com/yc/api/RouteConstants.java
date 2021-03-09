@@ -4,12 +4,12 @@ package com.yc.api;
  * <pre>
  *     @author 杨充
  *     blog  : https://github.com/yangchong211
- *     time  : 2019/12/23
- *     desc  : 常量
- *     revise:
+ *     time  : 2018/12/12
+ *     desc  : 自定义常量类
+ *     revise: 常量
  * </pre>
  */
-public class RouteConstants {
+public final class RouteConstants {
     public static final String SEPARATOR = "$$";
     public static final String CONTRACT = "Contract";
     public static final String INTERFACE_TYPE_REGISTER = "com.yc.api.IRegister";
@@ -17,4 +17,6 @@ public class RouteConstants {
     public static final String METHOD_NAME_REGISTER = "register";
     public static final String PACKAGE_NAME_CONTRACT = "com.yc.api.contract";
     public static final String INTERFACE_NAME_CONTRACT = "com.yc.api.IRouteContract";
+    public static final String INTERFACE_NAME_ROUTE_IMPL = "com.yc.api.RouteImpl";
+    public static final boolean LOG = true;
 }
