@@ -31,13 +31,20 @@ public class RouteImplProcessor extends AbstractProcessor {
     private Elements elements;
     private MyAnAnnotationValueVisitor annotationValueVisitor;
 
+    /**
+     * 初始化方法
+     * @param processingEnvironment                 获取信息
+     */
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
-        filer = processingEnv.getFiler();                  // Generate class.
-        elements = processingEnv.getElementUtils();      // Get class meta.
+        //文件生成器 类/资源
+        filer = processingEnv.getFiler();
+        //节点工具类 (类、函数、属性都是节点)
+        elements = processingEnv.getElementUtils();
         annotationValueVisitor = new MyAnAnnotationValueVisitor();
     }
+
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
@@ -70,13 +77,34 @@ public class RouteImplProcessor extends AbstractProcessor {
     }
 
     private TypeSpec buildClass(RouteContract<ClassName> apiNameContract) {
+        //获取接口的路径
         String simpleName = apiNameContract.getApi().simpleName();
+        if (RouteConstants.LOG){
+            System.out.println("RouteImplProcessor--------buildClass-------simpleName---"+simpleName);
+        }
+        //获取 com.yc.api.IRouteContract 信息，也就是IRouteContract接口的路径
         TypeElement typeElement = elements.getTypeElement(RouteConstants.INTERFACE_NAME_CONTRACT);
         ClassName className = ClassName.get(typeElement);
-        return TypeSpec.classBuilder(simpleName + RouteConstants.SEPARATOR + RouteConstants.CONTRACT)
+        if (RouteConstants.LOG){
+            System.out.println("RouteImplProcessor--------buildClass-------className---"+className);
+        }
+        //自定义注解生成类的类名
+        //例如：
+        String name = simpleName + RouteConstants.SEPARATOR + RouteConstants.CONTRACT;
+        if (RouteConstants.LOG){
+            System.out.println("RouteImplProcessor--------buildClass-------name---"+name);
+        }
+        //这里面又有添加方法注解，添加修饰符，添加参数规格，添加函数题，添加返回值等等
+        MethodSpec methodSpec = buildMethod(apiNameContract);
+        //创建类名
+        return TypeSpec.classBuilder(name)
+                //添加super接口
                 .addSuperinterface(className)
+                //添加修饰符
                 .addModifiers(Modifier.PUBLIC)
-                .addMethod(buildMethod(apiNameContract))
+                //添加方法【然后这里面又有添加方法注解，添加修饰符，添加参数规格，添加函数题，添加返回值等等】
+                .addMethod(methodSpec)
+                //创建
                 .build();
     }
 
