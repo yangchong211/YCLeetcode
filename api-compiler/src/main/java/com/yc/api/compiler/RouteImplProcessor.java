@@ -46,6 +46,19 @@ public class RouteImplProcessor extends AbstractProcessor {
     }
 
 
+    /**
+     * 所有的注解处理都是从这个方法开始的，你可以理解为，当APT找到所有需要处理的注解后，会回调这个方法，
+     * 你可以通过这个方法的参数，拿到你所需要的信息。
+     *
+     * 参数Set<? extends TypeElement> annotations：将返回所有由该Processor处理，并待处理的Annotations。
+     * (属于该Processor处理的注解，但并未被使用，不存在与这个集合里)
+     *
+     * 参数 RoundEnvironment roundEnv ：表示当前或是之前的运行环境，可以通过该对象查找找到的注解。
+     * @param set                       annotations
+     * @param roundEnvironment          roundEnvironment
+     * @return                          返回值 表示这组 annotations 是否被这个 Processor 接受，
+     *                                  如果接受true后续子的 Processor不会再对这个Annotations进行处理
+     */
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
         /*
@@ -58,14 +71,25 @@ public class RouteImplProcessor extends AbstractProcessor {
         for (TypeElement typeElement : set) {
             Set<? extends Element> annotated = roundEnvironment.getElementsAnnotatedWith(typeElement);
             for (Element apiImplElement : annotated) {
+                //被 RouteImpl 注解的节点集合
                 RouteImpl annotation = apiImplElement.getAnnotation(RouteImpl.class);
                 if (annotation == null || !(apiImplElement instanceof TypeElement)) {
                     continue;
                 }
                 RouteContract<ClassName> apiNameContract = ElementTool.getApiClassNameContract(elements,
                         annotationValueVisitor,(TypeElement) apiImplElement);
+                if (RouteConstants.LOG){
+                    System.out.println("RouteImplProcessor--------process-------apiNameContract---"+apiNameContract);
+                }
+                //生成注解类相关代码
+                TypeSpec typeSpec = buildClass(apiNameContract);
+                String s = typeSpec.toString();
+                if (RouteConstants.LOG){
+                    System.out.println("RouteImplProcessor--------process-------typeSpec---"+s);
+                }
                 try {
-                    JavaFile.builder(RouteConstants.PACKAGE_NAME_CONTRACT, buildClass(apiNameContract))
+                    //指定路径：com.yc.api.contract
+                    JavaFile.builder(RouteConstants.PACKAGE_NAME_CONTRACT, typeSpec)
                             .build()
                             .writeTo(filer);
                 } catch (IOException e) {
