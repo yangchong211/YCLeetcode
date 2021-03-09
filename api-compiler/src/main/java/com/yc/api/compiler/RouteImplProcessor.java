@@ -83,18 +83,34 @@ public class RouteImplProcessor extends AbstractProcessor {
     private MethodSpec buildMethod(RouteContract<ClassName> apiNameContract) {
         ClassName api = apiNameContract.getApi();
         ClassName apiImpl = apiNameContract.getApiImpl();
+        if (RouteConstants.LOG){
+            System.out.println("RouteImplProcessor--------buildMethod-------api---"+api + "----apiImpl---" + apiImpl);
+        }
+        String format = RouteConstants.INSTANCE_NAME_REGISTER + "." +
+                RouteConstants.METHOD_NAME_REGISTER + "($T.class, $T.class)";
+        if (RouteConstants.LOG){
+            System.out.println("RouteImplProcessor--------buildMethod-------format---"+format);
+        }
+        ParameterSpec parameterSpec = buildParameterSpec();
         return MethodSpec.methodBuilder(RouteConstants.METHOD_NAME_REGISTER)
+                //添加注解
                 .addAnnotation(Override.class)
+                //添加修饰符
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(buildParameterSpec())
-                .addStatement(RouteConstants.INSTANCE_NAME_REGISTER + "." +
-                        RouteConstants.METHOD_NAME_REGISTER + "($T.class, $T.class)", api,apiImpl )
+                //添加参数规格
+                .addParameter(parameterSpec)
+                //添加函数体
+                .addStatement(format, api,apiImpl)
                 .build();
     }
 
     private ParameterSpec buildParameterSpec() {
+        //获取 com.yc.api.IRegister 信息，也就是IRegister接口的路径
         TypeElement typeElement = elements.getTypeElement(RouteConstants.INTERFACE_TYPE_REGISTER);
         ClassName className = ClassName.get(typeElement);
+        if (RouteConstants.LOG){
+            System.out.println("RouteImplProcessor--------ParameterSpec-------className---"+className);
+        }
         return ParameterSpec
                 .builder(className, RouteConstants.INSTANCE_NAME_REGISTER)
                 .build();
