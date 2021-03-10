@@ -27,6 +27,8 @@
 
 
 ### 02.实现同级组件通信方式
+- 组件app分层
+    - ![image](https://img-blog.csdnimg.cn/20210310214447978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzM3NzAwMjc1,size_16,color_FFFFFF,t_70)
 - 至于关于页面跳转
     - 那肯定是首选路由，比如阿里的ARouter。但是涉及到组件之间业务复用，业务逻辑的交互等等，就有点难搞了……那该怎么处理比较方便呢？
 - 组件业务逻辑交互通信
