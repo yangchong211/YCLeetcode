@@ -18,6 +18,8 @@
 
 
 ### 02.项目组件通信流程
+- 组件app分层
+    - ![image](https://img-blog.csdnimg.cn/20210310214447978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzM3NzAwMjc1,size_16,color_FFFFFF,t_70)
 - 组件通信需求分析
     - 比如业务组件层划分
         - 组件A，组件B，组件C，组件D，组件E等等，这些业务组件并不是相互依赖，它们之间是相同的层级！
