@@ -386,7 +386,24 @@
     - 第三可能是Android Gradle及构建版本问题，我的是3.4.1 + 5.2.1，会出现不兼容的情况，大神建议3.3.2 ＋ 4.10.1以下都可以。听了建议降低版本果然构建编译，新的文件生成了。
 
 
+
 ### 12.在编译器调试生成代码
+- 第一步标记断点的位置
+    一般在写代码的时候调试是不可避免的，首先代码中对process()方法设置代码断点。
+- 第二步设置配置
+    - 设置gradle daemon端口和JVM参数。把下面两行加入到你的gradle.properties文件。
+    ``` java
+    org.gradle.daemon=true
+    org.gradle.jvmargs=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+    ```
+- 第三步命令行设置指令
+    - ./gradlew --daemon
+- 第四步在Android Studio建立Remote Debugger
+    - 建立Remote Debugger，之后Remote Debugger 配置，我们在这里使用默认设置。IP:localhost，端口:5005。
+    - 然后点击debug的那个按钮
+- 第五步用gradle命令来运行构建
+    - ./gradlew clean assembleDebug
+    - 既然我们已经启动了守护线程，Remote Debugger将触发断点并挂起构建运行。
 
 
 

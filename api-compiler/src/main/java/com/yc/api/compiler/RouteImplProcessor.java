@@ -80,9 +80,11 @@ public class RouteImplProcessor extends AbstractProcessor {
             //只有在这轮注释处理中包含</i>的包元素和类型元素<i>，或者在这些元素中声明的成员、构造函数、参数或类型参数才会返回。
             //包含的类型元素是{@linkplain #getRootElements根类型}以及嵌套在根类型中的任何成员类型。
             //包中的元素不会被认为包含，因为为该包创建了一个{@code package-info}文件。
+            //注意断点打印：com.zwwl.moduleb.ShowDialogImpl
             Set<? extends Element> annotated = roundEnvironment.getElementsAnnotatedWith(typeElement);
             for (Element apiImplElement : annotated) {
                 //被 RouteImpl 注解的节点集合
+                //注意断点打印：@com.yc.api.RouteImpl(value=com.zwwl.moduleinterface.IShowDialogManager)
                 RouteImpl annotation = apiImplElement.getAnnotation(RouteImpl.class);
                 if (annotation == null || !(apiImplElement instanceof TypeElement)) {
                     continue;
@@ -119,6 +121,7 @@ public class RouteImplProcessor extends AbstractProcessor {
         //获取接口的路径
         String simpleName = apiNameContract.getApi().simpleName();
         if (RouteConstants.LOG){
+            //注意断点打印：IShowDialogManager
             System.out.println("RouteImplProcessor--------buildClass-------simpleName---"+simpleName);
         }
         //获取 com.yc.api.IRouteContract 信息，也就是IRouteContract接口的路径

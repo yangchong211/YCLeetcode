@@ -23,6 +23,8 @@ public class ElementTool {
             Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues();
             Set<? extends Map.Entry<? extends ExecutableElement, ? extends AnnotationValue>> entries = elementValues.entrySet();
             for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : entries) {
+                ExecutableElement key = entry.getKey();
+                //注意断点打印：com.zwwl.moduleinterface.IShowDialogManager.class
                 AnnotationValue value = entry.getValue();
                 apiClassSymbol = value.accept(annotationValueVisitor, null);
             }
