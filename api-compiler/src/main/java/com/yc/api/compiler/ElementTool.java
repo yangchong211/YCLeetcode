@@ -17,6 +17,7 @@ public class ElementTool {
     public static RouteContract<ClassName> getApiClassNameContract(
             Elements elements, MyAnAnnotationValueVisitor annotationValueVisitor, TypeElement apiImplElement) {
         String apiClassSymbol = null;
+        //获取
         List<? extends AnnotationMirror> annotationMirrors = apiImplElement.getAnnotationMirrors();
         for (AnnotationMirror annotationMirror : annotationMirrors) {
             Map<? extends ExecutableElement, ? extends AnnotationValue> elementValues = annotationMirror.getElementValues();

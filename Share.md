@@ -1,56 +1,9 @@
 # 组件通信注解框架实践
 #### 目录介绍
-- 01.为何需要组件间通信
-- 02.实现同级组件通信方式
-- 03.先看一个简单的案例
-- 04.项目组件通信流程
-- 05.逆向简化注册流程
-- 06.这个注解是做什么的
-- 07.注解是如何生成代码
-- 08.如何定义注解处理器
-- 09.项目库的设计和完善
-- 10.封装该库有哪些特点
-- 11.一些常见的报错问题
-- 12.在编译器调试生成代码
-- 13.部分原理分析的说明
+- 01.老项目的做法
 
 
-### 01.为何需要组件间通信
-- 明确一个前提：各个业务组件之间不会是相互隔离而是必然存在一些交互的；
-    - 业务复用：在Module A需要引用Module B提供的某个功能，比如需要版本更新业务逻辑，而我们一般都是使用强引用的Class显式的调用；
-    - 业务复用：在Module A需要调用Module B提供的某个方法，例如别的Module调用用户模块退出登录的方法；
-    - 业务获取参数：登陆环境下，在Module A，C，D，E多个业务组件需要拿到Module B登陆注册组件中用户信息id，name，info等参数访问接口数据；
-- 这几种调用形式大家很容易明白，正常开发中大家也是毫不犹豫的调用。但是在组件化开发的时候却有很大的问题：
-    - 由于业务组件之间没有相互依赖，组件Module B的Activity Class在自己的Module中，那Module A必然引用不到，这样无法调用类的功能方法；由此：必然需要一种支持组件化需求的交互方式，提供平行级别的组件间调用函数通信交互的功能。
-- 项目库开源地址
-    - https://github.com/yangchong211/YCLiveDataBus
-
-
-### 02.实现同级组件通信方式
-- 组件app分层
-    - ![image](https://img-blog.csdnimg.cn/20210310214447978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzM3NzAwMjc1,size_16,color_FFFFFF,t_70)
-- 至于关于页面跳转
-    - 那肯定是首选路由，比如阿里的ARouter。但是涉及到组件之间业务复用，业务逻辑的交互等等，就有点难搞了……那该怎么处理比较方便呢？
-- 组件业务逻辑交互通信
-    - 比如业务组件层划分
-        - 组件A，组件B，组件C，组件D，组件E等等，这些业务组件并不是相互依赖，它们之间是相同的层级！
-    - 举一个业务案例
-        - 比如有个选择用户学员的弹窗，代码写到了组件A中，这个时候组件C和组件D需要复用组件A中的弹窗，该业务逻辑如何处理？
-        - 比如组件E是我的用户相关的业务逻辑，App登陆后，组件B和组件C需要用到用户的id去请求接口，这个时候如何获取组件E中用户id呢？
-    - 该层级下定义一个公共通信组件
-        - 接口通信组件【被各个业务组件依赖】，该相同层级的其他业务组件都需要依赖这个通信组件。这个时候各个模块都可以拿到通信组件的类……
-- 需要具备的那些特点
-    - 使用简单方便，避免同级组件相互依赖。代码入侵性要低，支持业务交互，自动化等特性。
-
-
-
-### 03.先看一个简单的案例
-- 先说一下业务场景
-    - 版本更新业务组件(处理更新弹窗，apk下载，apk的md5校验，安装等逻辑，还涉及到一些业务逻辑，比如更新模式普通或者强更，还有渠道，还有时间段等)
-    - 主模块首页，我的组件，设置中心组件等多个module组件中都会用到版本更新功能，除了主模块外，其他组件没有依赖版本更新组件，那么如何调用里面的更新弹窗业务逻辑呢？
-- 创建一个接口通信组件
-    - 如上所示，各个同级的业务组件，A，B，C，D等都依赖该接口通信组件。那么这样就会拿到通信组件的类，为了实现通信交互。可以在该接口通信组件中定义接口并暴露抽象更新弹窗方法，那么在版本更新组件中写接口实现类。
-    - 创建一个map集合，存储实现类的全路径，然后put到map集合中；这样可以get拿到实现类的路径，就可以利用反射创建实例对象。
+### 01.老项目的做法
 - 通信组件几个主要类
     - BusinessTransfer，主要是map集合中get获取和put添加接口类的对象，利用反射机制创建实例对象。**该类放到通信组件中**。
     - IUpdateManager，该类是版本更新接口类，定义更新抽象方法。**该类放到通信组件中**。
@@ -71,20 +24,7 @@
     public class UpdateManagerImpl implements IUpdateManager {
         @Override
         public void checkUpdate(UpdateManagerCallBack updateManagerCallBack) {
-            try {
-                IConfigService configService = DsxxjServiceTransfer.$().getConfigureService();
-                String data = configService.getConfig(KEY_APP_UPDATE);
-                if (TextUtils.isEmpty(data)) {
-                    if (updateManagerCallBack != null) {
-                        updateManagerCallBack.updateCallBack(false);
-                    }
-                    return;
-                }
-                ForceUpdateEntity xPageUpdateEntity = JSON.parseObject(data, ForceUpdateEntity.class);
-                ForceUpdateManager.getInstance().checkForUpdate(xPageUpdateEntity, updateManagerCallBack);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            //具体实现逻辑
         }
     }
     
@@ -122,11 +62,11 @@
 
 
 
-### 04.项目组件通信流程
-- 具体实现方案
-    - 比方说，主app中的首页有版本更新，业务组件用户中心的设置页面也有版本更新，而版本升级的逻辑是写在版本更新业务组件中。这个时候操作如下所示
-    - ![image](https://img-blog.csdnimg.cn/20200426093500838.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzM3NzAwMjc1,size_16,color_FFFFFF,t_70)
-
+### 02.改进后想达到目标
+- 达到的目标
+    - 使用简单方便，避免同级组件相互依赖。代码入侵性要低(不影响之前代码)，支持业务交互，自动化(将之前手动put改为自动操作)等特性。
+- 主要思路
+    - 1.定义注解类，主要是标记接口实现类。同时传入参数是接口类。这里主要是
 
 
 ### 05.逆向简化注册流程
@@ -191,7 +131,6 @@
 - 这个注解有什么用呢
     - 框架会在项目的编译器扫描所有添加@RouteImpl注解的XxxImpl接口实现类，然后传入接口类的class对象。这样就可以通过注解拿到接口和接口的实现类……
 - apt编译后生成的代码
-    - 由于这个文件是在build过程中创建的，所以只有build成功之后才可以查看到它。
     - build--->generated--->ap_generated_sources--->debug---->out---->com.yc.api.contract
     - 这段代码什么意思：编译器生成代码，并且该类是继承自己自定义的接口，调用IRegister接口中的register方法，key是接口class，value是接口实现类class，直接在编译器把接口和实现类存储起来。用的时候直接取……
     ``` java
@@ -225,7 +164,7 @@
         RouteImpl annotation = (RouteImpl) c.getAnnotation(RouteImpl.class);
         if (annotation != null) {
             try {
-                //获取RouteImpl的属性值
+                //获取ContentView的属性值
                 Class value = annotation.value();
                 String name = value.getName();
                 System.out.println("注解标记的类名"+name);
@@ -244,8 +183,6 @@
 ### 08.如何定义注解处理器
 - apt工具了解一下
     - APT是Annotation Processing Tool的简称,即注解处理工具。它是在编译期对代码中指定的注解进行解析，然后做一些其他处理（如通过javapoet生成新的Java文件）。
-- apt大概原理
-    - 是在某些代码元素上（如类型、函数、字段等）添加注解，在编译时编译器会检查AbstractProcessor的子类，并且调用该类型的process函数，然后将添加了注解的所有元素都传递到process函数中，使得开发人员可以在编译器进行相应的处理。
 - 定义注解处理器
     - 用来在编译期扫描加入@RouteImpl注解的类，然后做处理。这也是apt最核心的一步，新建RouteImplProcessor 继承自 AbstractProcessor,然后实现process方法。在项目编译期会执行RouterProcessor的process()方法，我们便可以在这个方法里处理RouteImpl注解了。
 - 初始化自定义Processor
@@ -386,11 +323,8 @@
     - 第三可能是Android Gradle及构建版本问题，我的是3.4.1 + 5.2.1，会出现不兼容的情况，大神建议3.3.2 ＋ 4.10.1以下都可以。听了建议降低版本果然构建编译，新的文件生成了。
 
 
-### 12.在编译器调试生成代码
 
-
-
-### 13.部分原理分析的说明
+### 12.部分原理分析的说明
 - 注解是如何生成代码的？也就是javapoet原理……
     - 这个javapoet工具，目前还紧紧是套用ARouter，创建类名，添加接口，添加注解，添加方法，添加修饰符，添加函数体等等。也就是说将一个类代码拆分成n个部分，然后逆向拼接到一起。最后去write写入代码……
     - 但是，怎么拼接和并且创建.java文件的原理，待完善。目前处于会用……

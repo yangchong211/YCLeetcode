@@ -27,7 +27,13 @@ import javax.lang.model.util.Elements;
 @SupportedAnnotationTypes(RouteConstants.INTERFACE_NAME_ROUTE_IMPL)
 public class RouteImplProcessor extends AbstractProcessor {
 
-    private Filer filer;       // File util, write class file into disk.
+    /**
+     * 文件生成器 类/资源
+     */
+    private Filer filer;
+    /**
+     * 节点工具类 (类、函数、属性都是节点)
+     */
     private Elements elements;
     private MyAnAnnotationValueVisitor annotationValueVisitor;
 
@@ -69,6 +75,11 @@ public class RouteImplProcessor extends AbstractProcessor {
             return false;
         }
         for (TypeElement typeElement : set) {
+            //返回用给定注释类型注释的元素。
+            //注释可以直接显示，也可以继承。
+            //只有在这轮注释处理中包含</i>的包元素和类型元素<i>，或者在这些元素中声明的成员、构造函数、参数或类型参数才会返回。
+            //包含的类型元素是{@linkplain #getRootElements根类型}以及嵌套在根类型中的任何成员类型。
+            //包中的元素不会被认为包含，因为为该包创建了一个{@code package-info}文件。
             Set<? extends Element> annotated = roundEnvironment.getElementsAnnotatedWith(typeElement);
             for (Element apiImplElement : annotated) {
                 //被 RouteImpl 注解的节点集合
@@ -76,6 +87,8 @@ public class RouteImplProcessor extends AbstractProcessor {
                 if (annotation == null || !(apiImplElement instanceof TypeElement)) {
                     continue;
                 }
+                //节点工具类 (类、函数、属性都是节点)
+                //apiImplElement 表示
                 RouteContract<ClassName> apiNameContract = ElementTool.getApiClassNameContract(elements,
                         annotationValueVisitor,(TypeElement) apiImplElement);
                 if (RouteConstants.LOG){
@@ -89,8 +102,10 @@ public class RouteImplProcessor extends AbstractProcessor {
                 }
                 try {
                     //指定路径：com.yc.api.contract
-                    JavaFile.builder(RouteConstants.PACKAGE_NAME_CONTRACT, typeSpec)
+                    String packageName = RouteConstants.PACKAGE_NAME_CONTRACT;
+                    JavaFile.builder(packageName, typeSpec)
                             .build()
+                            //文件生成器 类/资源
                             .writeTo(filer);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -163,6 +178,7 @@ public class RouteImplProcessor extends AbstractProcessor {
         if (RouteConstants.LOG){
             System.out.println("RouteImplProcessor--------ParameterSpec-------className---"+className);
         }
+        //添加参数规格
         return ParameterSpec
                 .builder(className, RouteConstants.INSTANCE_NAME_REGISTER)
                 .build();
