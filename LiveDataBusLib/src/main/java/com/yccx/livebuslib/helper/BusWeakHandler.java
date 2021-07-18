@@ -35,12 +35,11 @@ import java.util.concurrent.locks.ReentrantLock;
  *     revise: 采用弱引用，避免handler内存泄漏问题
  * </pre>
  */
-@SuppressWarnings("unused")
-public class BusWeakHandler {
+public final class BusWeakHandler {
 
     private final Handler.Callback mCallback;
     private final ExecHandler mExec;
-    private Lock mLock = new ReentrantLock();
+    private final Lock mLock = new ReentrantLock();
     @SuppressWarnings("ConstantConditions")
     @VisibleForTesting
     private final ChainedRef mRunnables = new ChainedRef(mLock, null);
