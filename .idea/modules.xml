@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/LiveDataBusLib/YCLiveDataBus.LiveDataBusLib.iml" filepath="$PROJECT_DIR$/.idea/modules/LiveDataBusLib/YCLiveDataBus.LiveDataBusLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-compiler/YCLiveDataBus.api-compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/api-compiler/YCLiveDataBus.api-compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-manager/YCLiveDataBus.api-manager.iml" filepath="$PROJECT_DIR$/.idea/modules/api-manager/YCLiveDataBus.api-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin/YCLiveDataBus.api-plugin.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin/YCLiveDataBus.api-plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/YCLiveDataBus.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/YCLiveDataBus.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/moduleA/YCLiveDataBus.moduleA.iml" filepath="$PROJECT_DIR$/.idea/modules/moduleA/YCLiveDataBus.moduleA.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/moduleB/YCLiveDataBus.moduleB.iml" filepath="$PROJECT_DIR$/.idea/modules/moduleB/YCLiveDataBus.moduleB.iml" />
