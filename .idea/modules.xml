@@ -5,14 +5,14 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/YCLiveDataBus.iml" filepath="$PROJECT_DIR$/.idea/modules/YCLiveDataBus.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Demo/YCLiveDataBus.Demo.iml" filepath="$PROJECT_DIR$/.idea/modules/Demo/YCLiveDataBus.Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/LiveDataBusLib/YCLiveDataBus.LiveDataBusLib.iml" filepath="$PROJECT_DIR$/.idea/modules/LiveDataBusLib/YCLiveDataBus.LiveDataBusLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-compiler/YCLiveDataBus.api-compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/api-compiler/YCLiveDataBus.api-compiler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-manager/YCLiveDataBus.api-manager.iml" filepath="$PROJECT_DIR$/.idea/modules/api-manager/YCLiveDataBus.api-manager.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin/YCLiveDataBus.api-plugin.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin/YCLiveDataBus.api-plugin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/YCLiveDataBus.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/YCLiveDataBus.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/moduleA/YCLiveDataBus.moduleA.iml" filepath="$PROJECT_DIR$/.idea/modules/moduleA/YCLiveDataBus.moduleA.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/moduleB/YCLiveDataBus.moduleB.iml" filepath="$PROJECT_DIR$/.idea/modules/moduleB/YCLiveDataBus.moduleB.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/moduleC/YCLiveDataBus.moduleC.iml" filepath="$PROJECT_DIR$/.idea/modules/moduleC/YCLiveDataBus.moduleC.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/moduleInterface/YCLiveDataBus.moduleInterface.iml" filepath="$PROJECT_DIR$/.idea/modules/moduleInterface/YCLiveDataBus.moduleInterface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-compiler/github.YCLiveDataBus.api-compiler.iml" filepath="$PROJECT_DIR$/.idea/modules/api-compiler/github.YCLiveDataBus.api-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-manager/github.YCLiveDataBus.api-manager.iml" filepath="$PROJECT_DIR$/.idea/modules/api-manager/github.YCLiveDataBus.api-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-plugin/github.YCLiveDataBus.api-plugin.iml" filepath="$PROJECT_DIR$/.idea/modules/api-plugin/github.YCLiveDataBus.api-plugin.iml" />
     </modules>
   </component>
 </project>

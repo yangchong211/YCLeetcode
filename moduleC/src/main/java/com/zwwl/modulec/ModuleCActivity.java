@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.yc.api.TransferManager;
+import com.yc.api.route.TransferManager;
 import com.zwwl.moduleinterface.IAddressManager;
 
 import java.util.concurrent.atomic.AtomicInteger;

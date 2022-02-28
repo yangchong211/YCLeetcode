@@ -1,4 +1,4 @@
-package com.yc.api.compiler;
+package com.yc.api.compiler.route;
 
 import com.squareup.javapoet.ClassName;
 

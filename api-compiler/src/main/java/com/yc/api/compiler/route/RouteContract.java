@@ -1,4 +1,4 @@
-package com.yc.api.compiler;
+package com.yc.api.compiler.route;
 
 public class RouteContract<T> {
 

@@ -1,6 +1,6 @@
 package com.zwwl.moduleinterface;
 
-import com.yc.api.IRoute;
+import com.yc.api.route.IRoute;
 
 public interface IUpdateManager extends IRoute {
 

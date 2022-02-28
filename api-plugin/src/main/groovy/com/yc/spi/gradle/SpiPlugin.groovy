@@ -6,13 +6,15 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
 
 
-class ServiceProviderInterfacePlugin implements Plugin<Project> {
+class SpiPlugin implements Plugin<Project> {
+
 
     @Override
     void apply(final Project project) {
         project.afterEvaluate {
             try {
-                if (!project.plugins.hasPlugin(Class.forName('com.android.build.gradle.AppPlugin'))) {
+                Class aClass = Class.forName('com.android.build.gradle.AppPlugin')
+                if (!project.plugins.hasPlugin(aClass)) {
                     return;
                 }
             } catch (final ClassNotFoundException e) {
@@ -23,9 +25,10 @@ class ServiceProviderInterfacePlugin implements Plugin<Project> {
                 def spiSourceDir = project.file("${project.buildDir}/intermediates/spi/${variant.dirName}/src")
                 def spiServicesDir = project.file("${project.buildDir}/intermediates/spi/${variant.dirName}/services")
                 def spiClasspath = project.files(project.android.bootClasspath, variant.javaCompile.classpath, variant.javaCompile.destinationDir)
-
-                def generateTask = project.task(
-                        "generateServiceRegistry${variant.name.capitalize()}",
+                print("SpiPlugin , spiSourceDir : " + spiSourceDir)
+                print("SpiPlugin , spiServicesDir : " + spiServicesDir)
+                print("SpiPlugin , spiClasspath : " + spiClasspath)
+                def generateTask = project.task("generateServiceRegistry${variant.name.capitalize()}",
                         type: ServiceRegistryGenerationTask) {
                     description = "Generate ServiceRegistry for ${variant.name.capitalize()}"
                     classpath += spiClasspath

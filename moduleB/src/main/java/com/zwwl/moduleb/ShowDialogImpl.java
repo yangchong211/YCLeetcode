@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
 
-import com.yc.api.RouteImpl;
+import com.yc.api.route.RouteImpl;
 import com.zwwl.moduleinterface.IShowDialogManager;
 
 @RouteImpl(IShowDialogManager.class)

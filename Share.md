@@ -252,7 +252,7 @@
     ```
     private TypeSpec buildClass(ApiContract<ClassName> apiNameContract) {
         String simpleName = apiNameContract.getApi().simpleName();
-        //获取 com.yc.api.IRouteContract 信息，也就是IRouteContract接口的路径
+        //获取 com.yc.api.route.IRouteContract 信息，也就是IRouteContract接口的路径
         TypeElement typeElement = elements.getTypeElement(RouteConstants.INTERFACE_NAME_CONTRACT);
         ClassName className = ClassName.get(typeElement);
         String name = simpleName + RouteConstants.SEPARATOR + RouteConstants.CONTRACT;

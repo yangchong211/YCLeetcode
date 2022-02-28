@@ -2,7 +2,7 @@ package com.zwwl.moduleinterface;
 
 import android.content.Context;
 
-import com.yc.api.IRoute;
+import com.yc.api.route.IRoute;
 
 
 public interface IUserManager extends IRoute {
